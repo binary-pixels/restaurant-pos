@@ -19,6 +19,7 @@ Page({
     orderTime: '',
     paymentMethod: '',
     loadError: false,
+    hoverRating: 0,
   },
 
   onLoad: function(options) {
@@ -93,6 +94,21 @@ Page({
           // Cancel via API (same as admin cancel)
           wx.showToast({ title: '请联系店员取消', icon: 'none' });
         }
+      },
+    });
+  },
+
+  doRate: function(e) {
+    var rating = e.currentTarget.dataset.rating;
+    var that = this;
+    wx.request({
+      url: app.globalData.baseUrl + '/api/mini-program/orders',
+      method: 'PUT',
+      data: { orderId: that.data.orderId, rating: rating },
+      header: { 'Content-Type': 'application/json' },
+      success: function() {
+        that.setData({ 'order.rating': rating });
+        wx.showToast({ title: '评价成功', icon: 'success' });
       },
     });
   },

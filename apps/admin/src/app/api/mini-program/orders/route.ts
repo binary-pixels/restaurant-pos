@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// Note: In production, authenticate via token to get customerId
 export async function GET(req: NextRequest) {
   const storeId = req.nextUrl.searchParams.get("storeId") || "";
   const status = req.nextUrl.searchParams.get("status");
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "");
 
   const where: any = { storeId };
   if (status === "active") {
-    where.status = { in: ["PENDING", "CONFIRMED", "PREPARING", "SERVED"] };
+    where.status = { in: ["PENDING", "CONFIRMED", "PREPARING", "SERVED", "DELIVERING"] };
+  }
+  // Filter by customer phone (token = phone)
+  if (token) {
+    const customer = await prisma.customer.findFirst({ where: { phone: token } });
+    if (customer) where.customerId = customer.id;
   }
 
   const orders = await prisma.order.findMany({
@@ -28,9 +33,22 @@ export async function GET(req: NextRequest) {
       type: o.type,
       status: o.status,
       total: o.total,
+      isPaid: o.isPaid,
+      rating: o.rating,
       tableLabel: o.table?.label || null,
       itemCount: o.items.length,
       createdAt: o.createdAt.toISOString(),
     })),
   });
+}
+
+// Save order rating
+export async function PUT(req: NextRequest) {
+  const body = await req.json();
+  const { orderId, rating } = body;
+  if (!orderId || !rating || rating < 1 || rating > 5) {
+    return NextResponse.json({ error: "Invalid" }, { status: 400 });
+  }
+  await prisma.order.update({ where: { id: orderId }, data: { rating } });
+  return NextResponse.json({ success: true });
 }

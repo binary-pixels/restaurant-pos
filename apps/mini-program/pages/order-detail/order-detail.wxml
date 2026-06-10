@@ -57,6 +57,22 @@
       </view>
     </view>
 
+    <!-- Rating -->
+    <view class="card" wx:if="{{order.status === 'COMPLETED' && !order.rating}}">
+      <text class="text-sm font-medium mb-2">评价本次用餐</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" bindtap="doRate" data-rating="{{item}}" style="font-size:48rpx;color:{{hoverRating >= item ? '#f59e0b' : '#ddd'}};padding:0 8rpx" data-hover="{{item}}">{{hoverRating >= item || order.rating >= item ? '★' : '☆'}}</text>
+      </view>
+    </view>
+    <view class="card" wx:if="{{order.rating}}">
+      <view class="flex-between">
+        <text class="text-sm text-gray">我的评价</text>
+        <text style="color:#f59e0b;font-size:36rpx">
+          <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this">{{item <= order.rating ? '★' : '☆'}}</text>
+        </text>
+      </view>
+    </view>
+
     <!-- Actions -->
     <view class="actions">
       <!-- Pay button -->
