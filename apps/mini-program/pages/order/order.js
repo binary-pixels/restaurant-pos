@@ -89,6 +89,18 @@ Page({
     var cart = app.globalData.cart || [];
     if (cart.length === 0) return;
 
+    // Validate delivery address
+    if (this.data.orderType === 'DELIVERY') {
+      var addr = (this.data.address || '').trim();
+      var name = (this.data.contactName || '').trim();
+      var phone = (this.data.contactPhone || '').trim();
+      if (!addr) { wx.showToast({ title: '请填写配送地址', icon: 'none' }); return; }
+      if (addr.length < 5) { wx.showToast({ title: '地址太短，请填写详细地址', icon: 'none' }); return; }
+      if (!name) { wx.showToast({ title: '请填写联系人', icon: 'none' }); return; }
+      if (!phone) { wx.showToast({ title: '请填写手机号', icon: 'none' }); return; }
+      if (!/^1\d{10}$/.test(phone)) { wx.showToast({ title: '手机号格式不正确', icon: 'none' }); return; }
+    }
+
     this.setData({ submitting: true });
     wx.showLoading({ title: '下单中...' });
 

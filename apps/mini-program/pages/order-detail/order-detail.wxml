@@ -6,36 +6,67 @@
 
   <!-- Error -->
   <view class="text-center" style="padding:120rpx 0" wx:if="{{loadError}}">
-    <text class="status-icon" style="font-size:80rpx">😞</text>
+    <text style="font-size:80rpx">😞</text>
     <text class="text-gray mt-2">订单加载失败</text>
     <view class="btn btn-outline mt-4" bindtap="retry" style="width:200rpx;margin:20rpx auto">重试</view>
   </view>
 
   <block wx:if="{{order}}">
+    <!-- Status Card -->
     <view class="status-card card text-center">
       <text class="status-icon">{{statusIcon}}</text>
       <text class="status-text">{{statusLabel}}</text>
-      <text class="text-sm text-gray mt-1">订单号: {{order.orderNo}}</text>
+      <text class="text-sm text-gray mt-1">#{{order.orderNo}}</text>
+      <view class="flex-center mt-2" style="gap:12rpx">
+        <text class="text-xs text-gray">{{orderTime}}</text>
+        <text class="text-xs text-gray" wx:if="{{order.tableLabel}}">🪑 {{order.tableLabel}}</text>
+        <text class="badge {{order.isPaid ? 'badge-green' : 'badge-red'}}">{{order.isPaid ? '已支付' : '待支付'}}</text>
+      </view>
     </view>
 
+    <!-- Items -->
     <view class="card">
       <text class="font-bold text-lg mb-2">菜品明细</text>
       <view class="item-row" wx:for="{{order.items}}" wx:key="id">
-        <text class="flex-1">{{item.productName}}</text>
+        <view class="flex-1">
+          <text>{{item.productName}}</text>
+          <text class="text-xs text-gray" wx:if="{{item.specSnapshot}}">({{item.specSnapshot}})</text>
+        </view>
         <text class="mx-2">×{{item.quantity}}</text>
         <text class="price">¥{{item.subtotal}}</text>
       </view>
     </view>
 
+    <!-- Note -->
+    <view class="card" wx:if="{{order.note}}">
+      <text class="text-sm text-gray">📝 备注: {{order.note}}</text>
+    </view>
+
+    <!-- Totals -->
     <view class="card">
       <view class="total-row"><text>小计</text><text class="price">¥{{order.subtotal}}</text></view>
-      <view class="total-row"><text>优惠</text><text class="text-green">-¥{{order.discountTotal || 0}}</text></view>
+      <view class="total-row" wx:if="{{order.discountTotal > 0}}"><text>优惠</text><text class="text-green">-¥{{order.discountTotal}}</text></view>
       <view class="total-row final"><text>实付</text><text class="price" style="font-size:34rpx">¥{{order.total}}</text></view>
     </view>
 
-    <!-- Pay button for unpaid orders -->
-    <view class="pay-bar" wx:if="{{!order.isPaid}}">
-      <view class="btn btn-primary" bindtap="doPay">去支付 ¥{{order.total}}</view>
+    <!-- Payment Info -->
+    <view class="card" wx:if="{{order.isPaid}}">
+      <view class="flex-between">
+        <text class="text-sm text-gray">支付方式</text>
+        <text>{{paymentMethod}}</text>
+      </view>
+    </view>
+
+    <!-- Actions -->
+    <view class="actions">
+      <!-- Pay button -->
+      <view class="btn btn-primary" wx:if="{{!order.isPaid}}" bindtap="doPay">去支付 ¥{{order.total}}</view>
+
+      <!-- Cancel button -->
+      <view class="btn btn-outline" wx:if="{{!order.isPaid && order.status !== 'CANCELLED'}}" bindtap="doCancel">取消订单</view>
+
+      <!-- Order again -->
+      <view class="btn btn-outline" wx:if="{{order.status === 'COMPLETED'}}" bindtap="reorder">再来一单</view>
     </view>
   </block>
 </view>

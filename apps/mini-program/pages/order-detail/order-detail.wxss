@@ -9,3 +9,8 @@
 
 .pay-bar { padding: 24rpx; }
 .pay-bar .btn { width: 100%; }
+
+.actions { padding: 24rpx; display: flex; flex-direction: column; gap: 16rpx; }
+.actions .btn { width: 100%; text-align: center; }
+
+.flex-center { display: flex; align-items: center; justify-content: center; }

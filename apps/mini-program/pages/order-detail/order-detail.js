@@ -16,6 +16,8 @@ Page({
     orderId: '',
     statusIcon: '⏳',
     statusLabel: '加载中',
+    orderTime: '',
+    paymentMethod: '',
     loadError: false,
   },
 
@@ -56,9 +58,21 @@ Page({
         return;
       }
       var status = order.status || 'PENDING';
+      var payments = order.payments || [];
+      var pm = '未支付';
+      if (payments.length > 0 && payments[0].status === 'SUCCESS') {
+        var methodMap = { CASH: '现金', WECHAT_QR: '微信支付', WECHAT_JSAPI: '微信支付', ALIPAY_QR: '支付宝', CARD: '银行卡', MEMBER_BALANCE: '会员余额' };
+        pm = methodMap[payments[0].method] || payments[0].method;
+      }
+      var timeStr = '';
+      if (order.createdAt) {
+        timeStr = new Date(order.createdAt).toLocaleString('zh-CN');
+      }
       that.setData({
         order: order,
         loadError: false,
+        orderTime: timeStr,
+        paymentMethod: pm,
         statusIcon: STATUS_EMOJI[status] || '⏳',
         statusLabel: STATUS_LABELS[status] || status,
       });
@@ -66,6 +80,39 @@ Page({
         if (that._timer) { clearInterval(that._timer); that._timer = null; }
       }
     });
+  },
+
+  doCancel: function() {
+    var that = this;
+    wx.showModal({
+      title: '取消订单',
+      content: '确定取消此订单？',
+      success: function(res) {
+        if (res.confirm) {
+          that.loadOrder(that.data.orderId);
+          // Cancel via API (same as admin cancel)
+          wx.showToast({ title: '请联系店员取消', icon: 'none' });
+        }
+      },
+    });
+  },
+
+  reorder: function() {
+    var order = this.data.order;
+    if (!order || !order.items) return;
+    var cart = [];
+    for (var i = 0; i < order.items.length; i++) {
+      cart.push({
+        productId: order.items[i].productId,
+        productName: order.items[i].productName,
+        quantity: order.items[i].quantity,
+        unitPrice: order.items[i].unitPrice,
+      });
+    }
+    app.globalData.cart = cart;
+    app.saveCart();
+    wx.switchTab({ url: '/pages/index/index' });
+    wx.showToast({ title: '已加入购物车', icon: 'success' });
   },
 
   doPay: function() {

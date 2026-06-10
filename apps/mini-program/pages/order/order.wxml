@@ -12,11 +12,11 @@
 
   <!-- Delivery Address -->
   <view class="address-box" wx:if="{{orderType === 'DELIVERY'}}">
-    <text class="address-label">📍 配送地址</text>
-    <input class="address-input" placeholder="请输入详细地址" value="{{address}}" bindinput="onAddressInput" />
+    <text class="address-label">📍 配送地址 <text style="color:#ef4444">*</text></text>
+    <input class="address-input" placeholder="省市区街道门牌号（至少5个字）" value="{{address}}" bindinput="onAddressInput" maxlength="200" />
     <view class="address-row">
-      <input class="address-input flex-1" placeholder="联系人" value="{{contactName}}" bindinput="onContactNameInput" />
-      <input class="address-input flex-1" type="number" placeholder="手机号" value="{{contactPhone}}" bindinput="onContactPhoneInput" />
+      <input class="address-input flex-1" placeholder="联系人 *" value="{{contactName}}" bindinput="onContactNameInput" maxlength="20" />
+      <input class="address-input flex-1" type="number" placeholder="手机号 *" value="{{contactPhone}}" bindinput="onContactPhoneInput" maxlength="11" />
     </view>
   </view>
 
