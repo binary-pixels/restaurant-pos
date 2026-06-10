@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { cancelOrder, refundOrder, payOrder, closeOrder } from "@/actions/order-actions";
+import { cancelOrder, refundOrder, payOrder, closeOrder, updateOrderStatus } from "@/actions/order-actions";
 import { formatCurrency } from "@pos/shared";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, Ban, RotateCcw, Printer, CheckCircle, Wallet } from "lucide-react";
+import { ArrowLeft, Ban, RotateCcw, Printer, CheckCircle, Wallet, Truck } from "lucide-react";
 import { useState } from "react";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -89,7 +89,20 @@ export function OrderDetail({ order }: Props) {
         <InfoCard label="就餐人数" value={`${order.guestCount}人`} />
         <InfoCard label="客户" value={order.customer?.name || "散客"} />
         {order.note && <InfoCard label="备注" value={order.note} />}
+        {order.type === "DELIVERY" && order.note && order.note.includes("地址:") && (
+          <InfoCard label="配送信息" value={order.note.replace(/\|/g, "\n")} />
+        )}
       </div>
+
+      {/* Delivery status actions */}
+      {order.type === "DELIVERY" && order.isPaid && order.status === "CONFIRMED" && (
+        <button
+          onClick={async () => { await updateOrderStatus(order.id, "DELIVERING"); router.refresh(); }}
+          className="px-4 py-2 text-sm bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-1"
+        >
+          <Truck className="w-4 h-4" /> 开始配送
+        </button>
+      )}
 
       {/* Items */}
       <div className="bg-white rounded-xl border">

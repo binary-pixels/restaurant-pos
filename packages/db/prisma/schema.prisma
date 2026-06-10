@@ -27,6 +27,17 @@ model Store {
   orders     Order[]
   customers  Customer[]
   tags       Tag[]
+  configs    StoreConfig[]
+}
+
+model StoreConfig {
+  id      String @id @default(cuid())
+  storeId String
+  store   Store  @relation(fields: [storeId], references: [id])
+  key     String
+  value   String
+
+  @@unique([storeId, key])
 }
 
 model User {

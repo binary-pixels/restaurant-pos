@@ -56,12 +56,16 @@
   <!-- Totals -->
   <view class="totals" wx:if="{{cart.length > 0}}">
     <view class="total-row"><text>小计</text><text class="price">¥{{subtotal}}</text></view>
-    <view class="total-row final"><text>合计</text><text class="price">¥{{subtotal}}</text></view>
+    <view class="total-row" wx:if="{{orderType === 'DELIVERY'}}">
+      <text class="{{deliveryFee > 0 ? 'text-gray' : 'text-green'}}">{{deliveryLabel}}</text>
+      <text wx:if="{{deliveryFee > 0}}" class="price">¥{{deliveryFee}}</text>
+    </view>
+    <view class="total-row final"><text>合计</text><text class="price" style="font-size:34rpx">¥{{total}}</text></view>
   </view>
 
   <!-- Submit -->
   <view class="submit-bar" wx:if="{{cart.length > 0}}">
-    <text>合计 <text class="price" style="font-size:36rpx">¥{{subtotal}}</text></text>
+    <text>合计 <text class="price" style="font-size:36rpx">¥{{total}}</text></text>
     <view class="btn btn-primary" style="padding:0 80rpx" bindtap="submitOrder">下单</view>
   </view>
 </view>

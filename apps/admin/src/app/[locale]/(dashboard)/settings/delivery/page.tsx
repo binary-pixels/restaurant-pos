@@ -108,7 +108,15 @@ export default function DeliveryPage() {
           </label>
           <p className="text-xs text-gray-500 mt-1 ml-6">订单支付后自动向配送平台发单</p>
         </div>
-        <button className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">保存配置</button>
+        <button
+          onClick={async () => {
+            await fetch("/api/delivery-config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(config) });
+            alert("配送配置已保存");
+          }}
+          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+        >
+          保存配置
+        </button>
       </div>
     </div>
   );

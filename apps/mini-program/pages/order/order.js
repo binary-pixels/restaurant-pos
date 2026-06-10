@@ -5,6 +5,9 @@ Page({
   data: {
     cart: [],
     subtotal: '0.00',
+    deliveryFee: 0,
+    deliveryLabel: '',
+    total: '0.00',
     tableLabel: '',
     orderType: 'DINE_IN',
     guests: 1,
@@ -33,7 +36,25 @@ Page({
     for (var i = 0; i < cart.length; i++) {
       subtotal += cart[i].unitPrice * cart[i].quantity;
     }
-    this.setData({ cart: cart, subtotal: subtotal.toFixed(2) });
+    var delivery = app.globalData.delivery || { deliveryFee: 5, freeDeliveryMin: 50 };
+    var fee = 0;
+    var label = '';
+    if (this.data.orderType === 'DELIVERY') {
+      if (subtotal >= (delivery.freeDeliveryMin || 0)) {
+        label = '免配送费 (满¥' + delivery.freeDeliveryMin + ')';
+      } else {
+        fee = delivery.deliveryFee || 5;
+        label = '配送费 ¥' + fee.toFixed(2);
+      }
+    }
+    var total = subtotal + fee;
+    this.setData({
+      cart: cart,
+      subtotal: subtotal.toFixed(2),
+      deliveryFee: fee,
+      deliveryLabel: label,
+      total: total.toFixed(2),
+    });
   },
 
   decQty: function(e) {

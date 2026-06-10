@@ -45,6 +45,8 @@ Page({
             return { id: p.id, categoryId: p.categoryId, name: p.name, price: p.price, unit: p.unit, _qty: 0, hasSpecs: !!(p.specs && p.specs.length > 0) };
           });
           that._rawProducts = res.data.products || [];
+          // Save delivery config globally
+          if (res.data.delivery) app.globalData.delivery = res.data.delivery;
           that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
         }
       },

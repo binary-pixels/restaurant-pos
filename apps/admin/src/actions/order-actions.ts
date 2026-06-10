@@ -212,3 +212,9 @@ export async function refundOrder(orderId: string) {
   revalidatePath("/[locale]/orders");
   return updated;
 }
+
+export async function updateOrderStatus(orderId: string, status: string) {
+  const updated = await prisma.order.update({ where: { id: orderId }, data: { status } });
+  revalidatePath("/[locale]/orders");
+  return updated;
+}
