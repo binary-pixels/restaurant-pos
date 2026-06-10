@@ -6,7 +6,10 @@
     "pages/order-detail/order-detail",
     "pages/mine/mine",
     "pages/login/login",
-    "pages/addresses/addresses"
+    "pages/addresses/addresses",
+    "pages/coupons/coupons",
+    "pages/topup/topup",
+    "pages/settings/settings"
   ],
   "tabBar": {
     "color": "#999999",

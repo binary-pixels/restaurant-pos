@@ -41,16 +41,16 @@
       <text>📍 地址管理</text>
       <text class="text-gray">▶</text>
     </view>
-    <view class="menu-item" bindtap="onComingSoon">
+    <view class="menu-item" bindtap="goPage" data-url="/pages/coupons/coupons">
       <text>🎁 优惠券</text>
       <text class="text-gray">▶</text>
     </view>
-    <view class="menu-item" bindtap="onComingSoon">
+    <view class="menu-item" bindtap="goPage" data-url="/pages/topup/topup">
       <text>💳 余额充值</text>
       <text class="text-gray">▶</text>
     </view>
-    <view class="menu-item" bindtap="onComingSoon">
-      <text>📞 联系客服</text>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/settings/settings">
+      <text>⚙️ 设置</text>
       <text class="text-gray">▶</text>
     </view>
   </view>

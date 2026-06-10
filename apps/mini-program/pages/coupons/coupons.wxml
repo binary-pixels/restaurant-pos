@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="header">
+    <text class="header-title">我的优惠券</text>
+  </view>
+  <view class="empty" wx:if="{{coupons.length === 0}}">
+    <text class="empty-icon">🎫</text>
+    <text class="empty-text">暂无优惠券</text>
+  </view>
+  <view class="coupon-list" wx:for="{{coupons}}" wx:key="id">
+    <view class="coupon-card">
+      <text class="coupon-value">
+        <block wx:if="{{item.type === 'PERCENTAGE'}}">{{item.value}}折</block>
+        <block wx:elif="{{item.type === 'FIXED_DISCOUNT'}}">¥{{item.value}}</block>
+        <block wx:else>免配送</block>
+      </text>
+      <text class="coupon-cond">满¥{{item.minSpend}}可用</text>
+      <text class="coupon-code">{{item.code}}</text>
+      <text class="coupon-date">{{item.startDate}} ~ {{item.endDate}}</text>
+    </view>
+  </view>
+</view>

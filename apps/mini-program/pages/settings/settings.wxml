@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="menu-list">
+    <view class="menu-item" bindtap="clearCache">
+      <text>🗑️ 清除缓存</text>
+      <text class="text-gray">▶</text>
+    </view>
+    <view class="menu-item" bindtap="callService">
+      <text>📞 联系客服</text>
+      <text class="text-sm text-primary">138-0000-0000</text>
+    </view>
+    <view class="menu-item">
+      <text>📱 关于我们</text>
+      <text class="text-sm text-gray">v1.0.0</text>
+    </view>
+  </view>
+  <view class="footer">
+    <text class="footer-text">餐厅点餐收银系统</text>
+    <text class="footer-sub">Powered by restaurant-pos</text>
+  </view>
+</view>

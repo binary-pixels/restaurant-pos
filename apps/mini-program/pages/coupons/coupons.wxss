@@ -1,0 +1,9 @@
+.page { min-height: 100vh; background: #f5f5f5; }
+.header { background: #fff; padding: 24rpx 32rpx; border-bottom: 1rpx solid #f0f0f0; }
+.header-title { font-size: 34rpx; font-weight: bold; }
+.coupon-list { padding: 20rpx; }
+.coupon-card { background: linear-gradient(135deg, #fff5f5, #fff); border: 2rpx solid #fecaca; border-radius: 16rpx; padding: 28rpx; margin-bottom: 16rpx; }
+.coupon-value { font-size: 48rpx; font-weight: bold; color: #dc2626; }
+.coupon-cond { font-size: 26rpx; color: #999; display: block; margin: 4rpx 0; }
+.coupon-code { font-size: 24rpx; color: #2563eb; background: #eff6ff; padding: 4rpx 12rpx; border-radius: 4rpx; display: inline-block; }
+.coupon-date { font-size: 22rpx; color: #ccc; display: block; margin-top: 8rpx; }

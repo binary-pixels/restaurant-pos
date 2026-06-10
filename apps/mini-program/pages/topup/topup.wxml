@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="header-card">
+    <text class="header-title">余额充值</text>
+    <text class="header-balance">当前余额 ¥{{balance}}</text>
+  </view>
+
+  <view class="amounts">
+    <text class="section-label">选择充值金额</text>
+    <view class="amount-grid">
+      <view class="amount-item {{amount === 100 ? 'active' : ''}}" bindtap="selectAmount" data-amount="100">¥100</view>
+      <view class="amount-item {{amount === 200 ? 'active' : ''}}" bindtap="selectAmount" data-amount="200">¥200</view>
+      <view class="amount-item {{amount === 500 ? 'active' : ''}}" bindtap="selectAmount" data-amount="500">¥500</view>
+      <view class="amount-item {{amount === 1000 ? 'active' : ''}}" bindtap="selectAmount" data-amount="1000">¥1000</view>
+      <view class="amount-item {{amount === 2000 ? 'active' : ''}}" bindtap="selectAmount" data-amount="2000">¥2000</view>
+      <view class="amount-item {{amount === 5000 ? 'active' : ''}}" bindtap="selectAmount" data-amount="5000">¥5000</view>
+    </view>
+  </view>
+
+  <view class="custom-amount">
+    <text class="section-label">自定义金额</text>
+    <input class="input" type="digit" placeholder="输入充值金额" value="{{customAmount}}" bindinput="onCustomInput" />
+  </view>
+
+  <view class="pay-section">
+    <view class="btn btn-primary" bindtap="doTopUp" wx:if="{{finalAmount > 0}}">
+      确认充值 ¥{{finalAmount}}
+    </view>
+  </view>
+</view>
