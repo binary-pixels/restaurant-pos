@@ -1,0 +1,18 @@
+.login-page {
+  min-height: 100vh; background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  display: flex; align-items: center; justify-content: center; padding: 40rpx;
+}
+.login-card {
+  width: 100%; background: #fff; border-radius: 32rpx; padding: 60rpx 40rpx;
+  display: flex; flex-direction: column; align-items: center;
+}
+.login-icon { font-size: 80rpx; margin-bottom: 16rpx; }
+.login-title { font-size: 40rpx; font-weight: bold; }
+.login-desc { font-size: 26rpx; color: #999; margin: 12rpx 0 48rpx; }
+
+.form { width: 100%; }
+.login-btns { width: 100%; }
+
+.login-btns .btn {
+  width: 100%; margin-bottom: 20rpx;
+}

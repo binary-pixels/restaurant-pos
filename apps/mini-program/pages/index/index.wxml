@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="table-bar" wx:if="{{tableLabel}}">
+    <text>桌号 {{tableLabel}}</text>
+  </view>
+
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索菜品..." value="{{keyword}}" bindinput="onSearch" />
+  </view>
+
+  <scroll-view class="cat-tabs" scroll-x>
+    <view class="cat-tab {{activeCat === 'all' ? 'active' : ''}}" bindtap="switchCat" data-id="all">全部</view>
+    <view class="cat-tab {{activeCat === item.id ? 'active' : ''}}" wx:for="{{categories}}" wx:key="id" bindtap="switchCat" data-id="{{item.id}}">{{item.name}}</view>
+  </scroll-view>
+
+  <scroll-view class="product-list" scroll-y>
+    <view class="product-card" wx:for="{{filteredProducts}}" wx:key="id" bindtap="openSpec" data-product="{{item}}">
+      <view class="product-img"><text class="product-img-text">{{item.name[0]}}</text></view>
+      <view class="product-info">
+        <text class="product-name">{{item.name}}</text>
+        <view class="product-row">
+          <text class="price">¥{{item.price}}</text>
+          <view class="qty-ctrl">
+            <view class="qty-btn" catchtap="decQty" data-id="{{item.id}}">-</view>
+            <text class="qty-num">{{item._qty || 0}}</text>
+            <view class="qty-btn add" catchtap="incQty" data-id="{{item.id}}">+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="cart-bar" wx:if="{{cartCount > 0}}" bindtap="goOrder">
+    <view class="cart-left">
+      <view class="cart-icon">🛒<text class="cart-badge">{{cartCount}}</text></view>
+      <text style="color:#fff;font-size:32rpx;font-weight:bold">¥{{cartTotal}}</text>
+    </view>
+    <view class="cart-btn">去下单</view>
+  </view>
+</view>
+
+<spec-popup product="{{specProduct}}" show="{{showSpec}}" bind:confirm="onSpecConfirm" bind:close="onSpecClose" />

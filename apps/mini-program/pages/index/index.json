@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "spec-popup": "/components/spec-popup/spec-popup"
+  },
+  "navigationBarTitleText": "点餐"
+}

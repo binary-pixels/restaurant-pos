@@ -1,0 +1,22 @@
+<view class="spec-mask" wx:if="{{show}}" bindtap="onClose">
+  <view class="spec-panel" catchtap>
+    <text class="spec-name">{{product.name}}</text>
+    <view class="spec-group" wx:for="{{product.specs}}" wx:key="id" wx:for-item="spec">
+      <text class="spec-label">{{spec.name}}</text>
+      <view class="spec-options">
+        <view
+          class="spec-option {{selected[spec.id] === opt.id ? 'active' : ''}}"
+          wx:for="{{spec.options}}" wx:key="id" wx:for-item="opt"
+          bindtap="selectOption" data-spec-id="{{spec.id}}" data-opt-id="{{opt.id}}"
+        >
+          {{opt.label}}
+          <text wx:if="{{opt.priceAdj > 0}}"> +¥{{opt.priceAdj}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="spec-actions">
+      <view class="btn btn-sm btn-outline" bindtap="onClose">取消</view>
+      <view class="btn btn-sm btn-primary" bindtap="onConfirm">加入购物车 · ¥{{product.price}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,53 @@
+<view class="page">
+  <!-- Profile Card -->
+  <view class="profile-card" bindtap="goLogin" wx:if="{{!userInfo}}">
+    <view class="avatar">👤</view>
+    <text class="mt-2 text-lg">登录/注册</text>
+    <text class="text-sm text-gray mt-1">登录后享受会员权益</text>
+  </view>
+
+  <view class="profile-card" wx:else>
+    <view class="avatar">{{userInfo.avatar || '👤'}}</view>
+    <text class="mt-2 text-lg font-bold">{{userInfo.name || '会员'}}</text>
+    <view class="flex mt-2" style="gap:16rpx">
+      <text class="badge {{tierBadge}}">{{tierLabel}}</text>
+      <text class="text-sm text-gray">{{userInfo.phone || ''}}</text>
+    </view>
+  </view>
+
+  <!-- Stats -->
+  <view class="stats-row" wx:if="{{userInfo}}">
+    <view class="stat-item">
+      <text class="stat-val">{{userInfo.points || 0}}</text>
+      <text class="stat-label">积分</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-val">¥{{balance}}</text>
+      <text class="stat-label">余额</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-val">{{userInfo.visitCount || 0}}次</text>
+      <text class="stat-label">消费</text>
+    </view>
+  </view>
+
+  <!-- Menu -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goPage" data-url="/pages/orders/orders">
+      <text>📋 我的订单</text>
+      <text class="text-gray">▶</text>
+    </view>
+    <view class="menu-item" bindtap="onComingSoon">
+      <text>🎁 优惠券</text>
+      <text class="text-gray">▶</text>
+    </view>
+    <view class="menu-item" bindtap="onComingSoon">
+      <text>💳 余额充值</text>
+      <text class="text-gray">▶</text>
+    </view>
+    <view class="menu-item" bindtap="onComingSoon">
+      <text>📞 联系客服</text>
+      <text class="text-gray">▶</text>
+    </view>
+  </view>
+</view>

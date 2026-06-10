@@ -1,0 +1,24 @@
+<view class="login-page">
+  <view class="login-card">
+    <text class="login-icon">🍽️</text>
+    <text class="login-title">餐厅点餐</text>
+    <text class="login-desc">授权登录后享受会员权益</text>
+
+    <view class="form" wx:if="{{mode === 'phone'}}">
+      <input class="input mb-3" type="number" placeholder="手机号" value="{{phone}}" bindinput="onPhoneInput" />
+      <input class="input mb-3" type="number" placeholder="验证码" value="{{code}}" bindinput="onCodeInput" />
+      <view class="flex-between mb-3">
+        <text class="text-sm text-gray">未注册将自动创建账号</text>
+        <text class="text-sm text-primary" bindtap="sendCode">{{codeText}}</text>
+      </view>
+      <view class="btn btn-primary" bindtap="phoneLogin">登录</view>
+    </view>
+
+    <view class="login-btns" wx:else>
+      <button class="btn btn-primary mb-2" open-type="getPhoneNumber" bindgetphonenumber="getPhone">📱 手机号快速登录</button>
+      <view class="btn btn-outline" bindtap="wechatLogin">💚 微信一键登录</view>
+      <view class="btn btn-outline mt-2" bindtap="switchMode" data-mode="phone">📞 验证码登录</view>
+      <text class="text-sm text-gray mt-4 text-center">登录即同意《用户协议》和《隐私政策》</text>
+    </view>
+  </view>
+</view>

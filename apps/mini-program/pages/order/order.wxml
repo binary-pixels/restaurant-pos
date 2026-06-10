@@ -1,0 +1,67 @@
+<view class="page">
+  <!-- Order Type -->
+  <view class="order-header">
+    <view class="type-tabs">
+      <view class="type-tab {{orderType === 'DINE_IN' ? 'active' : ''}}" bindtap="switchType" data-type="DINE_IN">🪑 堂食</view>
+      <view class="type-tab {{orderType === 'TAKEOUT' ? 'active' : ''}}" bindtap="switchType" data-type="TAKEOUT">🥡 自取</view>
+      <view class="type-tab {{orderType === 'DELIVERY' ? 'active' : ''}}" bindtap="switchType" data-type="DELIVERY">🛵 配送</view>
+    </view>
+    <text class="text-sm text-gray" wx:if="{{orderType === 'DINE_IN'}}">{{tableLabel}} · {{guests}}人</text>
+    <text class="text-sm text-gray" wx:else>{{guests}}人</text>
+  </view>
+
+  <!-- Delivery Address -->
+  <view class="address-box" wx:if="{{orderType === 'DELIVERY'}}">
+    <text class="address-label">📍 配送地址</text>
+    <input class="address-input" placeholder="请输入详细地址" value="{{address}}" bindinput="onAddressInput" />
+    <view class="address-row">
+      <input class="address-input flex-1" placeholder="联系人" value="{{contactName}}" bindinput="onContactNameInput" />
+      <input class="address-input flex-1" type="number" placeholder="手机号" value="{{contactPhone}}" bindinput="onContactPhoneInput" />
+    </view>
+  </view>
+
+  <!-- Cart Items -->
+  <view class="cart-items">
+    <view class="cart-item" wx:for="{{cart}}" wx:key="_key">
+      <view class="flex-1">
+        <text class="item-name">{{item.productName}}</text>
+        <text class="item-spec text-sm text-gray" wx:if="{{item.specSnapshot}}">{{item.specSnapshot}}</text>
+      </view>
+      <text class="price">¥{{item.unitPrice}}</text>
+      <view class="qty-ctrl">
+        <view class="qty-btn" bindtap="decQty" data-key="{{item._key}}">-</view>
+        <text class="qty-num">{{item.quantity}}</text>
+        <view class="qty-btn add" bindtap="incQty" data-key="{{item._key}}">+</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{cart.length === 0}}">
+    <text class="empty-icon">🛒</text>
+    <text class="empty-text">购物车为空</text>
+  </view>
+
+  <!-- Order Info -->
+  <view class="order-info" wx:if="{{cart.length > 0}}">
+    <view class="info-row">
+      <text class="text-gray">就餐人数</text>
+      <stepper value="{{guests}}" min="1" max="20" bind:change="onGuestsChange" />
+    </view>
+    <view class="info-row">
+      <text class="text-gray">备注</text>
+      <input class="note-input" placeholder="如：少盐、不要香菜" value="{{note}}" bindinput="onNoteInput" />
+    </view>
+  </view>
+
+  <!-- Totals -->
+  <view class="totals" wx:if="{{cart.length > 0}}">
+    <view class="total-row"><text>小计</text><text class="price">¥{{subtotal}}</text></view>
+    <view class="total-row final"><text>合计</text><text class="price">¥{{subtotal}}</text></view>
+  </view>
+
+  <!-- Submit -->
+  <view class="submit-bar" wx:if="{{cart.length > 0}}">
+    <text>合计 <text class="price" style="font-size:36rpx">¥{{subtotal}}</text></text>
+    <view class="btn btn-primary" style="padding:0 80rpx" bindtap="submitOrder">下单</view>
+  </view>
+</view>
