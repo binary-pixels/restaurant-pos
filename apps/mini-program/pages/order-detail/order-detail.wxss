@@ -6,3 +6,6 @@
 
 .total-row { display: flex; justify-content: space-between; padding: 10rpx 0; font-size: 28rpx; }
 .total-row.final { border-top: 1rpx solid #f0f0f0; margin-top: 8rpx; padding-top: 16rpx; }
+
+.pay-bar { padding: 24rpx; }
+.pay-bar .btn { width: 100%; }
