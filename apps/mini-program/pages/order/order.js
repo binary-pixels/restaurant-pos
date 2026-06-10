@@ -24,6 +24,31 @@ Page({
       tableLabel: app.globalData.tableLabel || '',
       orderType: hasTable ? 'DINE_IN' : 'TAKEOUT',
     });
+    if (!hasTable) this.loadSavedAddresses();
+  },
+
+  loadSavedAddresses: function() {
+    var that = this;
+    var token = app.globalData.token || '';
+    if (!token) return;
+    wx.request({
+      url: app.globalData.baseUrl + '/api/mini-program/addresses',
+      header: { 'Authorization': 'Bearer ' + token },
+      success: function(res) {
+        if (res.statusCode === 200 && res.data) {
+          var addrs = res.data.addresses || [];
+          var def = addrs.find(function(a) { return a.isDefault; }) || addrs[0];
+          if (def) {
+            that.setData({
+              address: def.address || '',
+              contactName: def.contactName || '',
+              contactPhone: def.phone || '',
+            });
+          }
+          that._savedAddresses = addrs;
+        }
+      },
+    });
   },
 
   onShow: function() {
@@ -121,6 +146,28 @@ Page({
       if (!phone) { wx.showToast({ title: '请填写手机号', icon: 'none' }); return; }
       if (!/^1\d{10}$/.test(phone)) { wx.showToast({ title: '手机号格式不正确', icon: 'none' }); return; }
     }
+
+    // For delivery: confirm address before submitting
+    if (this.data.orderType === 'DELIVERY') {
+      var addrConfirm = '地址: ' + this.data.address + '\n联系人: ' + this.data.contactName + '\n电话: ' + this.data.contactPhone + '\n\n确认下单？';
+      var that = this;
+      wx.showModal({
+        title: '确认配送信息',
+        content: addrConfirm,
+        success: function(res) {
+          if (res.confirm) that.doSubmit();
+        },
+      });
+      return;
+    }
+
+    this.doSubmit();
+  },
+
+  doSubmit: function() {
+    var that = this;
+    var cart = app.globalData.cart || [];
+    if (cart.length === 0) return;
 
     this.setData({ submitting: true });
     wx.showLoading({ title: '下单中...' });

@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
-  const storeId = req.nextUrl.searchParams.get("storeId") || "";
+  let storeId = req.nextUrl.searchParams.get("storeId") || "";
+  if (!storeId) {
+    const firstStore = await prisma.store.findFirst();
+    if (!firstStore) return NextResponse.json({ orders: [] });
+    storeId = firstStore.id;
+  }
   const status = req.nextUrl.searchParams.get("status");
   const token = req.headers.get("Authorization")?.replace("Bearer ", "");
 

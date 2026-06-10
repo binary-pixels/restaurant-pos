@@ -1,0 +1,50 @@
+<view class="page">
+  <view class="header">
+    <text class="header-title">地址管理</text>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && addresses.length === 0}}">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">暂无地址</text>
+  </view>
+
+  <view class="address-list" wx:for="{{addresses}}" wx:key="id">
+    <view class="address-card">
+      <view class="addr-top">
+        <view class="flex-1">
+          <text class="addr-label" wx:if="{{item.label}}">{{item.label}}</text>
+          <text class="addr-tag" wx:if="{{item.isDefault}}">默认</text>
+        </view>
+        <view class="addr-actions">
+          <text bindtap="editAddr" data-id="{{item.id}}">编辑</text>
+          <text class="text-red" bindtap="deleteAddr" data-id="{{item.id}}">删除</text>
+          <text wx:if="{{!item.isDefault}}" bindtap="setDefault" data-id="{{item.id}}" class="text-primary">设默认</text>
+        </view>
+      </view>
+      <text class="addr-text">{{item.address}}</text>
+      <text class="addr-contact">{{item.contactName}} {{item.phone}}</text>
+    </view>
+  </view>
+
+  <view class="add-btn" bindtap="showForm">
+    <text>+ 添加新地址</text>
+  </view>
+</view>
+
+<!-- Form Modal -->
+<view class="form-mask" wx:if="{{showForm}}">
+  <view class="form-panel">
+    <text class="form-title">{{editingId ? '编辑地址' : '新增地址'}}</text>
+    <input class="input" placeholder="标签（如：家、公司）" value="{{form.label}}" bindinput="onFieldChange" data-field="label" />
+    <input class="input" placeholder="详细地址 *" value="{{form.address}}" bindinput="onFieldChange" data-field="address" />
+    <input class="input" placeholder="联系人" value="{{form.contactName}}" bindinput="onFieldChange" data-field="contactName" />
+    <input class="input" type="number" placeholder="手机号" value="{{form.phone}}" bindinput="onFieldChange" data-field="phone" />
+    <label class="default-check">
+      <checkbox checked="{{form.isDefault}}" bindtap="toggleDefault" /> 设为默认地址
+    </label>
+    <view class="form-btns">
+      <view class="btn btn-outline" bindtap="closeForm">取消</view>
+      <view class="btn btn-primary" bindtap="saveAddr">保存</view>
+    </view>
+  </view>
+</view>

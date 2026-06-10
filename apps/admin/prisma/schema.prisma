@@ -90,10 +90,23 @@ model Customer {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  orders  Order[]
-  credits Credit[]
+  orders    Order[]
+  credits   Credit[]
+  addresses DeliveryAddress[]
 
   @@unique([storeId, phone])
+}
+
+model DeliveryAddress {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  label      String   @default("")
+  address    String
+  contactName String  @default("")
+  phone      String   @default("")
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 // ==================== PRODUCT & MENU ====================

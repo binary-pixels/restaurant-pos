@@ -37,6 +37,10 @@
       <text>📋 我的订单</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/addresses/addresses">
+      <text>📍 地址管理</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="onComingSoon">
       <text>🎁 优惠券</text>
       <text class="text-gray">▶</text>

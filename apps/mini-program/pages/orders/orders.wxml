@@ -4,23 +4,30 @@
     <view class="tab {{activeTab === 'active' ? 'active' : ''}}" bindtap="switchTab" data-tab="active">进行中</view>
   </view>
 
+  <view class="text-center" wx:if="{{loading}}" style="padding:80rpx 0;color:#999">加载中...</view>
+
   <view class="order-card card" wx:for="{{orders}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
     <view class="flex-between mb-2">
       <text class="text-sm text-gray">#{{item.orderNo}}</text>
-      <text class="badge {{item.status === 'COMPLETED' ? 'badge-green' : item.status === 'CANCELLED' ? 'badge-gray' : 'badge-blue'}}">{{statusMap[item.status] || item.status}}</text>
+      <text class="badge {{item.isPaid ? 'badge-green' : 'badge-red'}}">{{item.isPaid ? '已付' : '未付'}}</text>
     </view>
-    <view class="mb-2">
-      <text class="font-bold text-lg" wx:if="{{item.tableLabel}}">桌号: {{item.tableLabel}}</text>
-      <text class="font-bold text-lg" wx:else>{{item.type === 'TAKEOUT' ? '自取' : '外卖'}}</text>
+    <view class="flex-between mb-2">
+      <text class="font-bold text-lg">{{item.typeLabel}} {{item.tableLabel || ''}}</text>
+      <text class="badge {{item.status === 'COMPLETED' ? 'badge-green' : item.status === 'CANCELLED' ? 'badge-gray' : 'badge-blue'}}">{{statusMap[item.status] || item.status}}</text>
     </view>
     <view class="flex-between">
       <text>{{item.itemCount}} 道菜</text>
       <text class="price">¥{{item.total}}</text>
     </view>
-    <view class="text-sm text-gray mt-1">{{item.createdAt}}</view>
+    <view class="flex-between mt-1">
+      <text class="text-sm text-gray">{{item.timeStr}}</text>
+      <text wx:if="{{item.rating}}" style="color:#f59e0b">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this">{{item <= item.rating ? '★' : '☆'}}</text>
+      </text>
+    </view>
   </view>
 
-  <view class="empty" wx:if="{{orders.length === 0}}">
+  <view class="empty" wx:if="{{!loading && orders.length === 0}}">
     <text class="empty-icon">📋</text>
     <text class="empty-text">暂无订单</text>
   </view>

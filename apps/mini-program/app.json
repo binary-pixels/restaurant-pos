@@ -5,7 +5,8 @@
     "pages/orders/orders",
     "pages/order-detail/order-detail",
     "pages/mine/mine",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/addresses/addresses"
   ],
   "tabBar": {
     "color": "#999999",
