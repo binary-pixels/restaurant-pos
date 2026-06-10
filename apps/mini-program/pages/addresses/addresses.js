@@ -66,7 +66,19 @@ Page({
   saveAddr: function() {
     var that = this;
     var form = this.data.form;
-    if (!form.address.trim()) { wx.showToast({ title: '请填写地址', icon: 'none' }); return; }
+    var addr = (form.address || '').trim();
+    var phone = (form.phone || '').trim();
+
+    // Validate address
+    if (!addr) { wx.showToast({ title: '请填写地址', icon: 'none' }); return; }
+    if (addr.length < 5) { wx.showToast({ title: '地址太短，至少5个字', icon: 'none' }); return; }
+    if (addr.length > 200) { wx.showToast({ title: '地址过长，最多200字', icon: 'none' }); return; }
+
+    // Validate phone
+    if (phone && !/^1\d{10}$/.test(phone)) {
+      wx.showToast({ title: '手机号应为11位数字', icon: 'none' });
+      return;
+    }
 
     var token = app.globalData.token || '';
     var method = this.data.editingId ? 'PUT' : 'POST';

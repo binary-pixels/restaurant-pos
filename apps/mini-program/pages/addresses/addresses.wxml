@@ -35,10 +35,10 @@
 <view class="form-mask" wx:if="{{showForm}}">
   <view class="form-panel">
     <text class="form-title">{{editingId ? '编辑地址' : '新增地址'}}</text>
-    <input class="input" placeholder="标签（如：家、公司）" value="{{form.label}}" bindinput="onFieldChange" data-field="label" />
-    <input class="input" placeholder="详细地址 *" value="{{form.address}}" bindinput="onFieldChange" data-field="address" />
-    <input class="input" placeholder="联系人" value="{{form.contactName}}" bindinput="onFieldChange" data-field="contactName" />
-    <input class="input" type="number" placeholder="手机号" value="{{form.phone}}" bindinput="onFieldChange" data-field="phone" />
+    <input class="input" placeholder="标签（如：家、公司）" value="{{form.label}}" bindinput="onFieldChange" data-field="label" maxlength="20" />
+    <input class="input" placeholder="详细地址 *" value="{{form.address}}" bindinput="onFieldChange" data-field="address" maxlength="200" />
+    <input class="input" placeholder="联系人" value="{{form.contactName}}" bindinput="onFieldChange" data-field="contactName" maxlength="20" />
+    <input class="input" type="number" placeholder="手机号（11位）" value="{{form.phone}}" bindinput="onFieldChange" data-field="phone" maxlength="11" />
     <label class="default-check">
       <checkbox checked="{{form.isDefault}}" bindtap="toggleDefault" /> 设为默认地址
     </label>
