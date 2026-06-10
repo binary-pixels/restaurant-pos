@@ -23,19 +23,17 @@ export function OrderCart({ onTransferTable }: Props) {
   const selectedTableLabel = usePosStore((s) => s.selectedTableLabel);
   const addToCart = usePosStore((s) => s.addToCart);
 
+  const store = usePosStore;
+  const itemNotes = usePosStore((s) => s.itemNotes);
+  const setItemNoteAction = usePosStore((s) => s.setItemNote);
+
   const [editingNote, setEditingNote] = useState<string | null>(null);
   const [itemNote, setItemNote] = useState("");
   const [showTempItem, setShowTempItem] = useState(false);
   const [tempItem, setTempItem] = useState({ name: "", price: 0 });
 
-  function saveItemNote(productId: string, specSnapshot?: string) {
-    const key = `${productId}_${specSnapshot || "default"}`;
-    const item = cart.find((c) => c.key === key);
-    if (item) {
-      // Update note via store
-      usePosStore.getState().addToCart({ ...item, note: itemNote, quantity: 0 }); // hack to update
-      // Actually need a setItemNote in the store. Let me just track it locally for now.
-    }
+  function saveItemNote(key: string) {
+    setItemNoteAction(key, itemNote.trim() || "");
     setEditingNote(null);
   }
 
@@ -108,15 +106,15 @@ export function OrderCart({ onTransferTable }: Props) {
             {/* Item note */}
             {editingNote === item.key ? (
               <div className="mt-1 flex items-center gap-1">
-                <input autoFocus value={itemNote} onChange={(e) => setItemNote(e.target.value)} placeholder="如: 少盐、不要香菜" className="flex-1 px-2 py-1 text-xs border rounded" onBlur={() => saveItemNote(item.productId, item.specSnapshot)} onKeyDown={(e) => e.key === "Enter" && saveItemNote(item.productId, item.specSnapshot)} />
+                <input autoFocus value={itemNote} onChange={(e) => setItemNote(e.target.value)} placeholder="如: 少盐、不要香菜" className="flex-1 px-2 py-1 text-xs border rounded" onBlur={() => saveItemNote(item.key)} onKeyDown={(e) => e.key === "Enter" && saveItemNote(item.key)} />
               </div>
             ) : (
-              <button onClick={() => { setEditingNote(item.key); setItemNote(""); }} className="mt-1 text-xs text-gray-400 hover:text-blue-600 flex items-center gap-0.5">
-                <Edit3 className="w-3 h-3" /> {item.note || "添加备注"}
+              <button onClick={() => { setEditingNote(item.key); setItemNote(itemNotes[item.key] || ""); }} className="mt-1 text-xs text-gray-400 hover:text-blue-600 flex items-center gap-0.5">
+                <Edit3 className="w-3 h-3" /> {itemNotes[item.key] || "添加备注"}
               </button>
             )}
-            {item.note && editingNote !== item.key && (
-              <p className="text-xs text-blue-600 mt-0.5">{item.note}</p>
+            {itemNotes[item.key] && editingNote !== item.key && (
+              <p className="text-xs text-blue-600 mt-0.5">{itemNotes[item.key]}</p>
             )}
           </div>
         ))}

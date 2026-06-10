@@ -32,9 +32,12 @@ type PosState = {
   // Discount
   discount: DiscountInput | null;
 
+  // Item notes
+  itemNotes: Record<string, string>;
+
   // Payment
   paymentMethod: string;
-  paymentAmount: string; // received amount (for cash payment)
+  paymentAmount: string;
 
   // Actions
   setSelectedTable: (id: string | null, label?: string | null) => void;
@@ -45,6 +48,7 @@ type PosState = {
   clearCart: () => void;
   setGuestCount: (count: number) => void;
   setOrderNote: (note: string) => void;
+  setItemNote: (key: string, note: string) => void;
   setDiscount: (discount: DiscountInput | null) => void;
   setPaymentMethod: (method: string) => void;
   setPaymentAmount: (amount: string) => void;
@@ -63,6 +67,7 @@ export const usePosStore = create<PosState>((set, get) => ({
   guestCount: 1,
   orderNote: "",
   discount: null,
+  itemNotes: {},
   paymentMethod: "CASH",
   paymentAmount: "",
 
@@ -104,10 +109,15 @@ export const usePosStore = create<PosState>((set, get) => ({
       return { cart: state.cart.filter((c) => c.key !== key) };
     }),
 
-  clearCart: () => set({ cart: [], discount: null, orderNote: "", guestCount: 1 }),
+  clearCart: () => set({ cart: [], discount: null, orderNote: "", itemNotes: {}, guestCount: 1 }),
 
   setGuestCount: (count) => set({ guestCount: count }),
   setOrderNote: (note) => set({ orderNote: note }),
+  setItemNote: (key, note) => set((s) => {
+    const notes = { ...s.itemNotes };
+    if (note) notes[key] = note; else delete notes[key];
+    return { itemNotes: notes };
+  }),
   setDiscount: (discount) => set({ discount }),
   setPaymentMethod: (method) => set({ paymentMethod: method }),
   setPaymentAmount: (amount) => set({ paymentAmount: amount }),
@@ -120,6 +130,7 @@ export const usePosStore = create<PosState>((set, get) => ({
       guestCount: 1,
       orderNote: "",
       discount: null,
+      itemNotes: {},
       paymentMethod: "CASH",
       paymentAmount: "",
     }),

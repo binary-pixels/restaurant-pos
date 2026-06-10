@@ -8,6 +8,7 @@ import { createOrder, payOrder, closeOrder } from "@/actions/order-actions";
 import { ProductGrid } from "./product-grid";
 import { OrderCart } from "./order-cart";
 import { PaymentPanel } from "./payment-panel";
+import { SpecSelector } from "./spec-selector";
 import { cn } from "@/lib/utils";
 import { ArrowLeftRight } from "lucide-react";
 
@@ -21,6 +22,7 @@ export function PosScreen({ zones, categories, storeId, cashierId }: Props) {
   const [showPayment, setShowPayment] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showTransfer, setShowTransfer] = useState(false);
+  const [specProduct, setSpecProduct] = useState<any>(null);
 
   const subtotal = usePosStore(selectCartSubtotal);
   const total = usePosStore(selectCartTotal);
@@ -56,7 +58,7 @@ export function PosScreen({ zones, categories, storeId, cashierId }: Props) {
             quantity: item.quantity,
             unitPrice: item.unitPrice,
             specSnapshot: item.specSnapshot || undefined,
-            note: item.note || undefined,
+            note: store.itemNotes[item.key] || undefined,
           })),
           discount: discount ? { type: discount.type, name: discount.name, value: discount.value } : undefined,
           note: store.orderNote || undefined,
@@ -137,12 +139,17 @@ export function PosScreen({ zones, categories, storeId, cashierId }: Props) {
         <ProductGrid
           categories={categories}
           onProductClick={(product) => {
-            store.addToCart({
-              productId: product.id,
-              productName: product.name,
-              quantity: 1,
-              unitPrice: product.price,
-            });
+            // Show spec selector if product has specs
+            if (product.specs && product.specs.length > 0) {
+              setSpecProduct(product);
+            } else {
+              store.addToCart({
+                productId: product.id,
+                productName: product.name,
+                quantity: 1,
+                unitPrice: product.price,
+              });
+            }
           }}
         />
       </div>
@@ -187,6 +194,30 @@ export function PosScreen({ zones, categories, storeId, cashierId }: Props) {
           </button>
         </div>
       </div>
+
+      {/* Spec Selector Modal */}
+      <SpecSelector
+        product={specProduct}
+        open={!!specProduct}
+        onConfirm={(product, selectedOptions, totalPrice) => {
+          // Build spec snapshot string from selected options
+          const parts: string[] = [];
+          (product.specs || []).forEach((s: any) => {
+            const optId = selectedOptions[s.id];
+            const opt = (s.options || []).find((o: any) => o.id === optId);
+            if (opt) parts.push(s.name + ":" + opt.label);
+          });
+          store.addToCart({
+            productId: product.id,
+            productName: product.name,
+            quantity: 1,
+            unitPrice: totalPrice,
+            specSnapshot: parts.join(", "),
+          });
+          setSpecProduct(null);
+        }}
+        onClose={() => setSpecProduct(null)}
+      />
 
       {/* Payment Modal */}
       {showPayment && (
