@@ -120,8 +120,29 @@ export function OrderCart({ onTransferTable }: Props) {
         ))}
       </div>
 
-      {/* Discount */}
+      {/* Coupon Code */}
       <div className="mt-4 pt-3 border-t border-gray-200">
+        <div className="flex items-center gap-2 mb-2">
+          <input
+            placeholder="优惠券码"
+            className="flex-1 text-sm border rounded-lg px-2 py-1.5"
+            onKeyDown={async (e) => {
+              if (e.key === "Enter") {
+                const code = (e.target as HTMLInputElement).value.trim();
+                if (!code) return;
+                const subtotal = cart.reduce((s, c) => s + c.unitPrice * c.quantity, 0);
+                const res = await fetch("/api/coupons", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, orderTotal: subtotal }) });
+                const data = await res.json();
+                if (data.valid) {
+                  setDiscount({ type: "FIXED", name: "券-" + code.slice(-4), value: data.discount });
+                  (e.target as HTMLInputElement).value = "";
+                } else {
+                  alert(data.error || "无效券码");
+                }
+              }
+            }}
+          />
+        </div>
         <div className="flex items-center gap-2">
           <select className="flex-1 text-sm border rounded-lg px-2 py-1.5" value={discount ? `${discount.type}:${discount.value}` : ""}
             onChange={(e) => {

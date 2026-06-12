@@ -93,6 +93,7 @@ model Customer {
   orders    Order[]
   credits   Credit[]
   addresses DeliveryAddress[]
+  coupons   Coupon[]
 
   @@unique([storeId, phone])
 }
@@ -357,20 +358,33 @@ model Campaign {
 }
 
 model Coupon {
-  id         String    @id @default(cuid())
+  id         String         @id @default(cuid())
   storeId    String
   campaignId String?
-  campaign   Campaign? @relation(fields: [campaignId], references: [id])
-  code       String    @unique
+  campaign   Campaign?      @relation(fields: [campaignId], references: [id])
+  customerId String?
+  customer   Customer?      @relation(fields: [customerId], references: [id])
+  code       String         @unique
   type       String
   value      Float
-  minSpend   Float     @default(0)
+  minSpend   Float          @default(0)
   startDate  DateTime
   endDate    DateTime
-  usageLimit Int       @default(1)
-  usedCount  Int       @default(0)
-  isActive   Boolean   @default(true)
-  createdAt  DateTime  @default(now())
+  usageLimit Int            @default(1)
+  usedCount  Int            @default(0)
+  isActive   Boolean        @default(true)
+  createdAt  DateTime       @default(now())
+  usages     CouponUsage[]
+}
+
+model CouponUsage {
+  id        String   @id @default(cuid())
+  couponId  String
+  coupon    Coupon   @relation(fields: [couponId], references: [id])
+  orderId   String?
+  orderNo   String?
+  amount    Float
+  createdAt DateTime @default(now())
 }
 
 // ==================== PROCUREMENT ====================

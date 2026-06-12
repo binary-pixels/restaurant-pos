@@ -71,16 +71,33 @@ export function CouponManager({ coupons: initCoupons, storeId }: Props) {
             <h3 className="text-lg font-bold text-blue-600 mb-1">
               {c.type === "PERCENTAGE" ? c.value + "折" : c.type === "FREE_DELIVERY" ? "免配送" : "减" + formatCurrency(c.value)}
             </h3>
-            <p className="text-sm text-gray-600 mb-3">
+            <p className="text-sm text-gray-600 mb-1">
               满{formatCurrency(c.minSpend)}可用 · <code className="bg-gray-100 px-1 rounded">{c.code}</code>
             </p>
+            {c.customer && (
+              <p className="text-xs text-gray-400 mb-2">持有人: {c.customer.name || c.customer.phone}</p>
+            )}
             <div className="flex items-center justify-between text-xs text-gray-500">
               <span>{c.usedCount}/{c.usageLimit} 已用</span>
               <span>{new Date(c.startDate).toLocaleDateString("zh-CN")} ~ {new Date(c.endDate).toLocaleDateString("zh-CN")}</span>
             </div>
-            <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
               <div className="h-full bg-blue-500 rounded-full" style={{ width: Math.min(100, (c.usedCount / c.usageLimit) * 100) + "%" }} />
             </div>
+            {!c.customer && (
+              <button
+                onClick={() => {
+                  const phone = prompt("输入客户手机号以发券:");
+                  if (phone) {
+                    fetch("/api/coupons", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ couponId: c.id, customerId: phone }) })
+                      .then(() => router.refresh());
+                  }
+                }}
+                className="w-full text-xs text-blue-600 border border-blue-200 rounded py-1 hover:bg-blue-50"
+              >
+                发券给客户
+              </button>
+            )}
           </div>
         ))}
         {coupons.length === 0 && (
