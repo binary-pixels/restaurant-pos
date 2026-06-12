@@ -50,7 +50,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
   async function handleCreateProduct() {
     await createProduct({ storeId, ...productForm });
     setShowProductForm(false);
-    setProductForm({ categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "" });
+    setProductForm({ categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "", discountPrice: 0, discountEnd: "" });
     router.refresh();
   }
 
@@ -124,7 +124,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
           className="w-64 px-3 py-2 border rounded-lg text-sm"
         />
         <button
-          onClick={() => { setEditingProduct(null); setProductForm({ categoryId: activeCat !== "all" ? activeCat : categories[0]?.id || "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "" }); setShowProductForm(true); }}
+          onClick={() => { setEditingProduct(null); setProductForm({ categoryId: activeCat !== "all" ? activeCat : categories[0]?.id || "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "", discountPrice: 0, discountEnd: "" }); setShowProductForm(true); }}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
         >
           <Plus className="w-4 h-4 inline mr-1" />{t("addProduct")}
@@ -174,7 +174,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
                 <td className="py-3 px-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
-                      onClick={() => { setEditingProduct(product); setProductForm({ categoryId: product.categoryId, name: product.name, price: product.price, costPrice: product.costPrice || 0, unit: product.unit, stock: product.stock, lowStockAt: product.lowStockAt, barcode: product.barcode || "", image: (product as any).image || "" }); setShowProductForm(true); }}
+                      onClick={() => { setEditingProduct(product); setProductForm({ categoryId: product.categoryId, name: product.name, price: product.price, costPrice: product.costPrice || 0, unit: product.unit, stock: product.stock, lowStockAt: product.lowStockAt, barcode: product.barcode || "", image: (product as any).image || "", discountPrice: (product as any).discountPrice || 0, discountEnd: (product as any).discountEnd ? new Date((product as any).discountEnd).toISOString().slice(0, 16) : "" }); setShowProductForm(true); }}
                       className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded"
                     >
                       <Edit2 className="w-4 h-4" />
