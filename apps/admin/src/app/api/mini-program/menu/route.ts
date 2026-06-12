@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     storeId = firstStore.id;
   }
 
-  const [categories, products, deliveryConfig, newCustomerConfig] = await Promise.all([
+  const [categories, products, deliveryConfig, newCustomerConfig, volumeDiscConfig] = await Promise.all([
     prisma.category.findMany({
       where: { storeId, isActive: true },
       orderBy: { sortOrder: "asc" },
