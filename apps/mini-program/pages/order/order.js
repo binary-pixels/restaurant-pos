@@ -120,8 +120,12 @@ Page({
 
     var fee = 0;
     var label = '';
+    var freePromo = app.globalData.freeDeliveryPromo || { enabled: false };
     if (this.data.orderType === 'DELIVERY') {
-      if (subtotal >= (delivery.freeDeliveryMin || 0)) {
+      if (freePromo.enabled) {
+        label = '🎉 限时免配送费';
+        fee = 0;
+      } else if (subtotal >= (delivery.freeDeliveryMin || 0)) {
         label = '免配送费 (满¥' + delivery.freeDeliveryMin + ')';
       } else {
         fee = delivery.deliveryFee || 5;

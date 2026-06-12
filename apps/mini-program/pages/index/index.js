@@ -52,6 +52,7 @@ Page({
           if (res.data.newCustomer) app.globalData.newCustomer = res.data.newCustomer;
           if (res.data.volumeDiscount) app.globalData.volumeDiscount = res.data.volumeDiscount;
           if (res.data.buyGive) app.globalData.buyGive = res.data.buyGive;
+          if (res.data.freeDelivery) app.globalData.freeDeliveryPromo = res.data.freeDelivery;
           that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
         }
       },
