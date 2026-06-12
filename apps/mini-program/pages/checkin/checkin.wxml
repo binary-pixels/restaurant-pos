@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="header-card">
+    <text class="header-title">每日签到</text>
+    <text class="header-points">当前积分: {{totalPoints}}</text>
+  </view>
+
+  <view class="checkin-main">
+    <view class="streak-card">
+      <text class="streak-num">{{streak}}</text>
+      <text class="streak-label">连续签到天数</text>
+    </view>
+
+    <view class="btn btn-primary checkin-btn {{checkedToday ? 'disabled' : ''}}" bindtap="doCheckIn" wx:if="{{!checkedToday}}">
+      📅 今日签到 +{{todayPoints}}积分
+    </view>
+    <view class="btn checkin-btn checked" wx:else>
+      ✅ 今日已签到
+    </view>
+  </view>
+
+  <view class="calendar">
+    <text class="section-label">本月签到记录</text>
+    <view class="cal-grid">
+      <view class="cal-day" wx:for="{{days}}" wx:key="date">
+        <text class="cal-date {{item.isToday ? 'today' : ''}} {{item.checked ? 'checked' : ''}}">{{item.day}}</text>
+      </view>
+    </view>
+  </view>
+</view>

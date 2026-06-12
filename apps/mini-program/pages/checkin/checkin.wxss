@@ -1,0 +1,20 @@
+.page { min-height: 100vh; background: #f5f5f5; }
+.header-card { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 48rpx 32rpx; text-align: center; }
+.header-title { font-size: 34rpx; font-weight: bold; }
+.header-points { font-size: 28rpx; margin-top: 8rpx; opacity: 0.9; display: block; }
+
+.checkin-main { padding: 40rpx 32rpx; text-align: center; }
+.streak-card { margin-bottom: 32rpx; }
+.streak-num { font-size: 80rpx; font-weight: bold; color: #f59e0b; }
+.streak-label { font-size: 28rpx; color: #999; display: block; margin-top: 8rpx; }
+.checkin-btn { width: 80%; margin: 0 auto; padding: 28rpx 0; font-size: 32rpx; border-radius: 48rpx; }
+.checkin-btn.disabled { background: #d1d5db; color: #9ca3af; }
+.checkin-btn.checked { background: #d1fae5; color: #065f46; }
+
+.calendar { background: #fff; margin: 20rpx; border-radius: 16rpx; padding: 24rpx; }
+.section-label { font-size: 28rpx; font-weight: 500; margin-bottom: 16rpx; display: block; }
+.cal-grid { display: flex; flex-wrap: wrap; }
+.cal-day { width: calc(100% / 7); text-align: center; padding: 12rpx 0; }
+.cal-date { display: inline-block; width: 60rpx; height: 60rpx; line-height: 60rpx; border-radius: 50%; font-size: 28rpx; }
+.cal-date.today { border: 2rpx solid #f59e0b; font-weight: bold; }
+.cal-date.checked { background: #fef3c7; color: #92400e; }

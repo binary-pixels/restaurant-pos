@@ -94,6 +94,7 @@ model Customer {
   credits   Credit[]
   addresses DeliveryAddress[]
   coupons   Coupon[]
+  checkIns  CheckIn[]
 
   @@unique([storeId, phone])
 }
@@ -411,4 +412,15 @@ model ProcurementItem {
   productName   String
   quantity      Int
   unitCost      Float
+}
+
+model CheckIn {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  date       String
+  points     Int      @default(1)
+  createdAt  DateTime @default(now())
+
+  @@unique([customerId, date])
 }

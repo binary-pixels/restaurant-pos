@@ -9,7 +9,8 @@
     "pages/addresses/addresses",
     "pages/coupons/coupons",
     "pages/topup/topup",
-    "pages/settings/settings"
+    "pages/settings/settings",
+    "pages/checkin/checkin"
   ],
   "tabBar": {
     "color": "#999999",
