@@ -33,7 +33,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productForm, setProductForm] = useState({
-    categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "",
+    categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "", discountPrice: 0, discountEnd: "",
   });
 
   // Specs modal
@@ -268,6 +268,14 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
                 <div>
                   <label className="block text-sm font-medium mb-1">{t("stock")}</label>
                   <input type="number" value={productForm.stock} onChange={(e) => setProductForm({ ...productForm, stock: Number(e.target.value) })} className="w-full px-3 py-2 border rounded-lg" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">特价</label>
+                  <input type="number" step="0.01" value={productForm.discountPrice || ""} onChange={(e) => setProductForm({ ...productForm, discountPrice: Number(e.target.value) || 0 })} className="w-full px-3 py-2 border rounded-lg" placeholder="0=无折扣" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">特价截止</label>
+                  <input type="datetime-local" value={productForm.discountEnd} onChange={(e) => setProductForm({ ...productForm, discountEnd: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
                 </div>
               </div>
             </div>

@@ -140,6 +140,8 @@ model Product {
   image       String?
   price       Float
   costPrice   Float?
+  discountPrice Float?
+  discountEnd   DateTime?
   unit        String     @default("份")
   isActive    Boolean    @default(true)
   sortOrder   Int        @default(0)

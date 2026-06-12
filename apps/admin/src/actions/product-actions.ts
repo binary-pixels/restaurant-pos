@@ -37,6 +37,8 @@ export async function createProduct(data: {
   lowStockAt?: number;
   image?: string;
   barcode?: string;
+  discountPrice?: number;
+  discountEnd?: string;
 }) {
   const product = await prisma.product.create({
     data: {
@@ -51,6 +53,8 @@ export async function createProduct(data: {
       stock: data.stock || 0,
       lowStockAt: data.lowStockAt || 10,
       barcode: data.barcode || null,
+      discountPrice: data.discountPrice || null,
+      discountEnd: data.discountEnd ? new Date(data.discountEnd) : null,
     },
   });
   revalidatePath("/[locale]/menu");
@@ -70,6 +74,8 @@ export async function updateProduct(
     lowStockAt?: number;
     image?: string;
     barcode?: string;
+    discountPrice?: number;
+    discountEnd?: string;
     isActive?: boolean;
   }
 ) {

@@ -18,7 +18,8 @@
       <view class="product-info">
         <text class="product-name">{{item.name}}</text>
         <view class="product-row">
-          <text class="price">¥{{item.price}}</text>
+          <text wx:if="{{item.discountPrice > 0}}" style="text-decoration:line-through;color:#999;font-size:24rpx;margin-right:8rpx">¥{{item.price}}</text>
+          <text class="price">¥{{item.discountPrice > 0 ? item.discountPrice : item.price}}</text>
           <view class="qty-ctrl">
             <view class="qty-btn" catchtap="decQty" data-id="{{item.id}}">-</view>
             <text class="qty-num">{{item._qty || 0}}</text>

@@ -41,8 +41,10 @@ Page({
       timeout: 15000,
       success: function(res) {
         if (res.statusCode === 200 && res.data) {
+          var now = new Date();
           var products = (res.data.products || []).map(function(p) {
-            return { id: p.id, categoryId: p.categoryId, name: p.name, price: p.price, unit: p.unit, _qty: 0, hasSpecs: !!(p.specs && p.specs.length > 0) };
+            var onSale = !!(p.discountPrice && p.discountPrice > 0 && p.discountEnd && new Date(p.discountEnd) > now);
+            return { id: p.id, categoryId: p.categoryId, name: p.name, price: p.price, unit: p.unit, _qty: 0, hasSpecs: !!(p.specs && p.specs.length > 0), discountPrice: onSale ? p.discountPrice : 0 };
           });
           that._rawProducts = res.data.products || [];
           // Save delivery config globally
