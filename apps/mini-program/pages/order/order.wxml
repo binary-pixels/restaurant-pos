@@ -60,6 +60,10 @@
       <text class="text-green">🧧 新客立减</text>
       <text class="text-green">-¥{{newCustDiscount}}</text>
     </view>
+    <view class="total-row" wx:if="{{volumeDiscount > 0}}">
+      <text class="text-amber">🏷️ {{volumeLabel}}</text>
+      <text class="text-amber">-¥{{volumeDiscount}}</text>
+    </view>
     <view class="total-row" wx:if="{{orderType === 'DELIVERY'}}">
       <text class="{{deliveryFee > 0 ? 'text-gray' : 'text-green'}}">{{deliveryLabel}}</text>
       <text wx:if="{{deliveryFee > 0}}" class="price">¥{{deliveryFee}}</text>

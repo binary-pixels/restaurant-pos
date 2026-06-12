@@ -50,6 +50,7 @@ Page({
           // Save delivery config globally
           if (res.data.delivery) app.globalData.delivery = res.data.delivery;
           if (res.data.newCustomer) app.globalData.newCustomer = res.data.newCustomer;
+          if (res.data.volumeDiscount) app.globalData.volumeDiscount = res.data.volumeDiscount;
           that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
         }
       },

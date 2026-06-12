@@ -81,11 +81,27 @@ Page({
     }
     var delivery = app.globalData.delivery || { deliveryFee: 5, freeDeliveryMin: 50 };
     var newCust = app.globalData.newCustomer || { enabled: false, amount: 5 };
+    var vol = app.globalData.volumeDiscount || { enabled: false, type: "amount", threshold: 3, value: 20 };
 
     // New customer discount
     var newCustDiscount = 0;
     if (newCust.enabled && !this._hasOrders && subtotal > 0) {
       newCustDiscount = newCust.amount || 5;
+    }
+
+    // Volume discount
+    var volumeDiscount = 0;
+    var volumeLabel = '';
+    if (vol.enabled) {
+      var itemCount = 0;
+      for (var i = 0; i < cart.length; i++) { itemCount += cart[i].quantity; }
+      if (vol.type === "amount" && subtotal >= vol.threshold) {
+        volumeDiscount = vol.value;
+        volumeLabel = '满¥' + vol.threshold + '减¥' + vol.value;
+      } else if (vol.type === "percent" && itemCount >= vol.threshold) {
+        volumeDiscount = subtotal * (vol.value / 100);
+        volumeLabel = '满' + vol.threshold + '件打' + (100 - vol.value) + '折';
+      }
     }
 
     var fee = 0;
@@ -98,12 +114,14 @@ Page({
         label = '配送费 ¥' + fee.toFixed(2);
       }
     }
-    var total = subtotal + fee - newCustDiscount;
+    var total = subtotal + fee - newCustDiscount - volumeDiscount;
     if (total < 0) total = 0;
     this.setData({
       cart: cart,
       subtotal: subtotal.toFixed(2),
       newCustDiscount: newCustDiscount,
+      volumeDiscount: volumeDiscount,
+      volumeLabel: volumeLabel,
       deliveryFee: fee,
       deliveryLabel: label,
       total: total.toFixed(2),

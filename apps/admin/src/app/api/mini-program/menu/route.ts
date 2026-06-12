@@ -21,10 +21,12 @@ export async function GET(req: NextRequest) {
     }),
     prisma.storeConfig.findFirst({ where: { storeId, key: "delivery_config" } }),
     prisma.storeConfig.findFirst({ where: { storeId, key: "new_customer_discount" } }),
+    prisma.storeConfig.findFirst({ where: { storeId, key: "volume_discount" } }),
   ]);
 
   const delivery = deliveryConfig ? JSON.parse(deliveryConfig.value) : { deliveryFee: 5, freeDeliveryMin: 50, maxDistance: 5 };
   const newCustomer = newCustomerConfig ? JSON.parse(newCustomerConfig.value) : { enabled: false, amount: 5 };
+  const volumeDiscount = volumeDiscConfig ? JSON.parse(volumeDiscConfig.value) : { enabled: false, type: "amount", threshold: 3, value: 20 };
 
-  return NextResponse.json({ categories, products, delivery, newCustomer });
+  return NextResponse.json({ categories, products, delivery, newCustomer, volumeDiscount });
 }
