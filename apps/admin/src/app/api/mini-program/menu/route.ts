@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     storeId = firstStore.id;
   }
 
-  const [categories, products, deliveryConfig] = await Promise.all([
+  const [categories, products, deliveryConfig, newCustomerConfig] = await Promise.all([
     prisma.category.findMany({
       where: { storeId, isActive: true },
       orderBy: { sortOrder: "asc" },
@@ -19,12 +19,12 @@ export async function GET(req: NextRequest) {
       include: { specs: { include: { options: true } } },
       orderBy: { sortOrder: "asc" },
     }),
-    prisma.storeConfig.findFirst({
-      where: { storeId, key: "delivery_config" },
-    }),
+    prisma.storeConfig.findFirst({ where: { storeId, key: "delivery_config" } }),
+    prisma.storeConfig.findFirst({ where: { storeId, key: "new_customer_discount" } }),
   ]);
 
   const delivery = deliveryConfig ? JSON.parse(deliveryConfig.value) : { deliveryFee: 5, freeDeliveryMin: 50, maxDistance: 5 };
+  const newCustomer = newCustomerConfig ? JSON.parse(newCustomerConfig.value) : { enabled: false, amount: 5 };
 
-  return NextResponse.json({ categories, products, delivery });
+  return NextResponse.json({ categories, products, delivery, newCustomer });
 }

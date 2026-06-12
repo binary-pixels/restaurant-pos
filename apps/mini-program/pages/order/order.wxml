@@ -56,6 +56,10 @@
   <!-- Totals -->
   <view class="totals" wx:if="{{cart.length > 0}}">
     <view class="total-row"><text>小计</text><text class="price">¥{{subtotal}}</text></view>
+    <view class="total-row" wx:if="{{newCustDiscount > 0}}">
+      <text class="text-green">🧧 新客立减</text>
+      <text class="text-green">-¥{{newCustDiscount}}</text>
+    </view>
     <view class="total-row" wx:if="{{orderType === 'DELIVERY'}}">
       <text class="{{deliveryFee > 0 ? 'text-gray' : 'text-green'}}">{{deliveryLabel}}</text>
       <text wx:if="{{deliveryFee > 0}}" class="price">¥{{deliveryFee}}</text>

@@ -25,6 +25,24 @@ Page({
       orderType: hasTable ? 'DINE_IN' : 'TAKEOUT',
     });
     if (!hasTable) this.loadSavedAddresses();
+    this.checkNewCustomer();
+  },
+
+  checkNewCustomer: function() {
+    var that = this;
+    var token = app.globalData.token || '';
+    if (!token) { that._hasOrders = false; return; }
+    wx.request({
+      url: app.globalData.baseUrl + '/api/mini-program/orders?status=all',
+      header: { 'Authorization': 'Bearer ' + token },
+      success: function(res) {
+        if (res.statusCode === 200 && res.data) {
+          var orders = res.data.orders || [];
+          that._hasOrders = orders.length === 0; // true if NO orders (new customer)
+          that.loadCart(); // recalculate with discount
+        }
+      },
+    });
   },
 
   loadSavedAddresses: function() {
@@ -62,6 +80,14 @@ Page({
       subtotal += cart[i].unitPrice * cart[i].quantity;
     }
     var delivery = app.globalData.delivery || { deliveryFee: 5, freeDeliveryMin: 50 };
+    var newCust = app.globalData.newCustomer || { enabled: false, amount: 5 };
+
+    // New customer discount
+    var newCustDiscount = 0;
+    if (newCust.enabled && !this._hasOrders && subtotal > 0) {
+      newCustDiscount = newCust.amount || 5;
+    }
+
     var fee = 0;
     var label = '';
     if (this.data.orderType === 'DELIVERY') {
@@ -72,10 +98,12 @@ Page({
         label = '配送费 ¥' + fee.toFixed(2);
       }
     }
-    var total = subtotal + fee;
+    var total = subtotal + fee - newCustDiscount;
+    if (total < 0) total = 0;
     this.setData({
       cart: cart,
       subtotal: subtotal.toFixed(2),
+      newCustDiscount: newCustDiscount,
       deliveryFee: fee,
       deliveryLabel: label,
       total: total.toFixed(2),

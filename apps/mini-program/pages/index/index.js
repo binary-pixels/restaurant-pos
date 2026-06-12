@@ -47,6 +47,7 @@ Page({
           that._rawProducts = res.data.products || [];
           // Save delivery config globally
           if (res.data.delivery) app.globalData.delivery = res.data.delivery;
+          if (res.data.newCustomer) app.globalData.newCustomer = res.data.newCustomer;
           that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
         }
       },
