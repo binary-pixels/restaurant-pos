@@ -104,6 +104,20 @@ Page({
       }
     }
 
+    // Buy-give: auto-add free gift when threshold met
+    var buyGive = app.globalData.buyGive || { enabled: false, threshold: 88, productName: '赠饮一杯' };
+    var giftKey = '__gift__';
+    // Remove existing gift if threshold not met
+    var giftIdx = -1;
+    for (var i = 0; i < cart.length; i++) { if (cart[i]._key === giftKey) { giftIdx = i; break; } }
+    if (buyGive.enabled && subtotal >= buyGive.threshold) {
+      if (giftIdx < 0) {
+        cart.push({ _key: giftKey, productId: 'gift', productName: '🎁 ' + buyGive.productName, quantity: 1, unitPrice: 0, isGift: true });
+      }
+    } else {
+      if (giftIdx >= 0) cart.splice(giftIdx, 1);
+    }
+
     var fee = 0;
     var label = '';
     if (this.data.orderType === 'DELIVERY') {

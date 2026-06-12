@@ -27,12 +27,14 @@
         <text class="item-name">{{item.productName}}</text>
         <text class="item-spec text-sm text-gray" wx:if="{{item.specSnapshot}}">{{item.specSnapshot}}</text>
       </view>
-      <text class="price">¥{{item.unitPrice}}</text>
-      <view class="qty-ctrl">
+      <text class="price" wx:if="{{!item.isGift}}">¥{{item.unitPrice}}</text>
+      <text class="text-green" wx:else>赠品</text>
+      <view class="qty-ctrl" wx:if="{{!item.isGift}}">
         <view class="qty-btn" bindtap="decQty" data-key="{{item._key}}">-</view>
         <text class="qty-num">{{item.quantity}}</text>
         <view class="qty-btn add" bindtap="incQty" data-key="{{item._key}}">+</view>
       </view>
+      <text wx:else style="font-size:24rpx;color:#999">×1</text>
     </view>
   </view>
 

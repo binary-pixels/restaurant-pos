@@ -129,6 +129,15 @@ export default function SettingsPage() {
               await fetch("/api/marketing-config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "volume_discount", enabled: e.target.checked, type: "amount", threshold: 100, value: 15 }) });
             }} className="w-5 h-5 rounded border-gray-300 text-blue-600" />
           </label>
+          <label className="flex items-center justify-between py-2">
+            <div>
+              <p className="font-medium text-gray-900">满额赠品</p>
+              <p className="text-xs text-gray-500">满¥88送赠饮一杯</p>
+            </div>
+            <input type="checkbox" defaultChecked={false} onChange={async (e) => {
+              await fetch("/api/marketing-config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "buy_give", enabled: e.target.checked, threshold: 88, productName: "赠饮一杯" }) });
+            }} className="w-5 h-5 rounded border-gray-300 text-blue-600" />
+          </label>
         </div>
       </div>
     </div>
