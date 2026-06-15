@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="header">
+    <text class="title">📅 桌台预订</text>
+  </view>
+
+  <view class="form-card">
+    <input class="input" placeholder="姓名 *" value="{{name}}" bindinput="onField" data-field="name" />
+    <input class="input" type="number" placeholder="手机号 *" value="{{phone}}" bindinput="onField" data-field="phone" />
+    <picker mode="date" value="{{date}}" bindchange="onDateChange">
+      <view class="picker">{{date || '选择日期'}}</view>
+    </picker>
+    <picker mode="selector" range="{{timeSlots}}" value="{{timeIdx}}" bindchange="onTimeChange">
+      <view class="picker">{{timeSlots[timeIdx] || '选择时段'}}</view>
+    </picker>
+    <input class="input" type="number" placeholder="人数" value="{{guests}}" bindinput="onField" data-field="guests" />
+    <input class="input" placeholder="备注（可选）" value="{{note}}" bindinput="onField" data-field="note" />
+
+    <view class="btn btn-primary" bindtap="doReserve">确认预订</view>
+  </view>
+
+  <view class="card" wx:if="{{myReservations.length > 0}}">
+    <text class="subtitle">我的预订</text>
+    <view class="resv-item" wx:for="{{myReservations}}" wx:key="id">
+      <text>{{item.date}} {{item.timeSlot}} · {{item.tableLabel}} · {{item.guests}}人</text>
+      <text class="badge {{item.status === 'CONFIRMED' ? 'badge-green' : item.status === 'CANCELLED' ? 'badge-gray' : 'badge-blue'}}">
+        {{item.status === 'CONFIRMED' ? '已确认' : item.status === 'CANCELLED' ? '已取消' : '待确认'}}
+      </text>
+    </view>
+  </view>
+</view>

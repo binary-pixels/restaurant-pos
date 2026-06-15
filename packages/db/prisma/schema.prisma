@@ -475,3 +475,19 @@ model Commission {
   amount       Float
   createdAt    DateTime @default(now())
 }
+
+model Reservation {
+  id         String   @id @default(cuid())
+  storeId    String
+  customerId String?
+  tableId    String?
+  tableLabel String
+  name       String
+  phone      String
+  date       String
+  timeSlot   String
+  guests     Int      @default(2)
+  status     String   @default("PENDING")
+  note       String?
+  createdAt  DateTime @default(now())
+}

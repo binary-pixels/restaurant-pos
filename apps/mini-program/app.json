@@ -16,7 +16,8 @@
     "pages/scratch-card/scratch-card",
     "pages/stamps/stamps",
     "pages/group-buy/group-buy",
-    "pages/distributor/distributor"
+    "pages/distributor/distributor",
+    "pages/reserve/reserve"
   ],
   "tabBar": {
     "color": "#999999",

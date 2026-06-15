@@ -1,0 +1,8 @@
+.page { min-height: 100vh; background: #f5f5f5; }
+.header { background: #fff; padding: 24rpx 32rpx; }
+.title { font-size: 34rpx; font-weight: bold; }
+.form-card { background: #fff; margin: 20rpx; border-radius: 16rpx; padding: 24rpx; }
+.form-card .input { margin-bottom: 16rpx; }
+.picker { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; margin-bottom: 16rpx; color: #333; font-size: 28rpx; }
+.subtitle { font-size: 28rpx; font-weight: 500; display: block; margin-bottom: 12rpx; }
+.resv-item { display: flex; justify-content: space-between; align-items: center; padding: 12rpx 0; border-bottom: 1rpx solid #f0f0f0; font-size: 26rpx; }

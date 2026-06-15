@@ -56,6 +56,10 @@
       <text>🎡 幸运转盘</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/reserve/reserve">
+      <text>📅 桌台预订</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="goPage" data-url="/pages/group-buy/group-buy">
       <text>👥 拼团优惠</text>
       <text class="text-gray">▶</text>
