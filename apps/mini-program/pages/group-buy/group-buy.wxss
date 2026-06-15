@@ -1,0 +1,24 @@
+.page { min-height: 100vh; background: #f5f5f5; padding: 20rpx; }
+.header { text-align: center; padding: 32rpx; }
+.title { font-size: 36rpx; font-weight: bold; color: #d97706; }
+.desc { font-size: 26rpx; color: #999; display: block; margin-top: 4rpx; }
+.groups { margin-bottom: 20rpx; }
+.group-card { background: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; }
+.group-top { display: flex; justify-content: space-between; align-items: center; }
+.g-name { font-size: 30rpx; font-weight: bold; }
+.g-price { text-align: right; }
+.orig { font-size: 24rpx; color: #999; text-decoration: line-through; display: block; }
+.now { font-size: 36rpx; font-weight: bold; color: #ef4444; }
+.g-progress { margin: 16rpx 0; display: flex; align-items: center; gap: 12rpx; font-size: 26rpx; color: #666; }
+.progress-bar { flex: 1; height: 10rpx; background: #f3f4f6; border-radius: 5rpx; overflow: hidden; }
+.fill { height: 100%; background: #f59e0b; border-radius: 5rpx; }
+.g-actions { display: flex; justify-content: space-between; align-items: center; }
+.expire { font-size: 24rpx; color: #999; }
+.create-section { padding: 0 20rpx; }
+.create-section .btn { width: 100%; }
+.form-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: flex-end; }
+.form-panel { width: 100%; background: #fff; border-radius: 32rpx 32rpx 0 0; padding: 40rpx 32rpx; padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); }
+.form-title { font-size: 34rpx; font-weight: bold; margin-bottom: 24rpx; display: block; }
+.form-panel .input { margin-bottom: 16rpx; }
+.form-btns { display: flex; gap: 20rpx; margin-top: 16rpx; }
+.form-btns .btn { flex: 1; }

@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="header">
+    <text class="title">👥 拼团优惠</text>
+    <text class="desc">邀请好友一起拼，享超低价</text>
+  </view>
+
+  <view class="groups">
+    <view class="group-card" wx:for="{{groups}}" wx:key="id">
+      <view class="group-top">
+        <text class="g-name">{{item.productName}}</text>
+        <view class="g-price">
+          <text class="orig">¥{{item.origPrice}}</text>
+          <text class="now">¥{{item.price}}</text>
+        </view>
+      </view>
+      <view class="g-progress">
+        <text>{{item.memberCount}}/{{item.minPeople}} 人</text>
+        <view class="progress-bar">
+          <view class="fill" style="width:{{item.memberCount / item.minPeople * 100}}%"></view>
+        </view>
+      </view>
+      <view class="g-actions">
+        <text class="expire">剩余 {{item.expiresIn || '--'}}</text>
+        <view class="btn btn-sm btn-primary" bindtap="joinGroup" data-id="{{item.id}}">加入拼团</view>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{groups.length === 0}}">暂无拼团活动</view>
+  </view>
+
+  <view class="create-section">
+    <view class="btn btn-outline" bindtap="showCreate">发起新拼团</view>
+  </view>
+
+  <!-- Create Form -->
+  <view class="form-mask" wx:if="{{showForm}}">
+    <view class="form-panel">
+      <text class="form-title">发起拼团</text>
+      <input class="input" placeholder="商品名称" value="{{form.productName}}" bindinput="onField" data-field="productName" />
+      <input class="input" type="digit" placeholder="团购价" value="{{form.price}}" bindinput="onField" data-field="price" />
+      <input class="input" type="digit" placeholder="原价" value="{{form.origPrice}}" bindinput="onField" data-field="origPrice" />
+      <input class="input" type="number" placeholder="成团人数" value="{{form.minPeople}}" bindinput="onField" data-field="minPeople" />
+      <view class="form-btns">
+        <view class="btn btn-outline" bindtap="closeForm">取消</view>
+        <view class="btn btn-primary" bindtap="doCreate">发起</view>
+      </view>
+    </view>
+  </view>
+</view>

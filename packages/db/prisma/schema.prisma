@@ -438,3 +438,27 @@ model GiftCode {
   usedAt     DateTime?
   createdAt  DateTime  @default(now())
 }
+
+model GroupBuy {
+  id          String         @id @default(cuid())
+  storeId     String
+  productId   String
+  productName String
+  price       Float          @default(0)
+  origPrice   Float          @default(0)
+  minPeople   Int            @default(2)
+  status      String         @default("ACTIVE")
+  expiresAt   DateTime       @default(now())
+  createdAt   DateTime       @default(now())
+  members     GroupBuyMember[]
+}
+
+model GroupBuyMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     GroupBuy @relation(fields: [groupId], references: [id])
+  customerId String
+  createdAt DateTime @default(now())
+
+  @@unique([groupId, customerId])
+}
