@@ -491,3 +491,13 @@ model Reservation {
   note       String?
   createdAt  DateTime @default(now())
 }
+
+model Announcement {
+  id        String   @id @default(cuid())
+  storeId   String
+  title     String
+  content   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

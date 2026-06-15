@@ -56,6 +56,16 @@ Page({
           that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
         }
       },
+    });
+    // Load announcement separately
+    wx.request({
+      url: app.globalData.baseUrl + '/api/announcements?public=1',
+      success: function(res) {
+        if (res.statusCode === 200 && res.data && res.data.title) {
+          that.setData({ announcement: res.data });
+        }
+        }
+      },
       fail: function() {
         that.setData({ filteredProducts: [{ id: 'err', name: '加载失败，下拉重试', price: 0, unit: '' }] });
       }

@@ -2,10 +2,11 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
 import Link from "next/link";
-import { TicketPercent, Gift, Users, Sparkles, Timer, BadgePercent, Star } from "lucide-react";
+import { TicketPercent, Gift, Users, Sparkles, Timer, BadgePercent, Star, Megaphone } from "lucide-react";
 
 const modules = [
   { href: "/marketing/coupons", label: "优惠券管理", desc: "满减券/折扣券/兑换券", icon: TicketPercent, color: "bg-blue-500" },
+  { href: "/marketing/announcements", label: "公告管理", desc: "发布/管理店内公告", icon: Megaphone, color: "bg-indigo-500" },
   { href: "/marketing", label: "限时折扣", desc: "商品限时特价活动", icon: Timer, color: "bg-red-500" },
   { href: "/marketing", label: "套餐推广", desc: "组合套餐优惠", icon: Gift, color: "bg-purple-500" },
   { href: "/marketing/members", label: "会员体系", desc: "等级/积分/储值", icon: Users, color: "bg-amber-500" },

@@ -3,6 +3,10 @@
     <text>桌号 {{tableLabel}}</text>
   </view>
 
+  <view class="announce-bar" wx:if="{{announcement}}">
+    <text class="announce-text">📢 {{announcement.title}}: {{announcement.content}}</text>
+  </view>
+
   <view class="search-bar">
     <input class="search-input" placeholder="搜索菜品..." value="{{keyword}}" bindinput="onSearch" />
   </view>
