@@ -14,7 +14,7 @@ export async function GET() {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const [todayOrders, todayRevenue, activeTables, recentOrders] = await Promise.all([
+  const [todayOrders, todayRevenue, activeTables, todayCustomers, recentOrders] = await Promise.all([
     prisma.order.count({
       where: { storeId, createdAt: { gte: today, lt: tomorrow } },
     }),
@@ -23,6 +23,7 @@ export async function GET() {
       _sum: { amount: true },
     }),
     prisma.table.count({ where: { zone: { storeId }, status: "OCCUPIED" } }),
+    prisma.order.groupBy({ by: ["customerId"], where: { storeId, customerId: { not: null }, createdAt: { gte: today, lt: tomorrow } } }),
     prisma.order.findMany({
       where: { storeId },
       take: 5,
@@ -37,6 +38,7 @@ export async function GET() {
   return NextResponse.json({
     todayOrders,
     todayRevenue: todayRevenue._sum.amount || 0,
+    todayCustomers: todayCustomers.length,
     activeTables,
     recentOrders: recentOrders.map((o) => ({
       id: o.id,

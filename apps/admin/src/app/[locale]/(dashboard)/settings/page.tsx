@@ -77,7 +77,10 @@ export default function SettingsPage() {
           </div>
         </div>
         <button
-          onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}
+          onClick={async () => {
+            await fetch("/api/store", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: form.name, address: form.address, phone: form.phone }) });
+            setSaved(true); setTimeout(() => setSaved(false), 2000);
+          }}
           className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 flex items-center gap-2"
         >
           <Save className="w-4 h-4" />

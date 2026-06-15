@@ -8,6 +8,7 @@ import { DollarSign, ShoppingCart, Users, Table, Loader2 } from "lucide-react";
 type DashData = {
   todayOrders: number;
   todayRevenue: number;
+  todayCustomers: number;
   activeTables: number;
   recentOrders: {
     id: string;
@@ -58,7 +59,7 @@ export default function DashboardPage() {
     },
     {
       label: t("todayCustomers"),
-      value: "--",
+      value: String(data.todayCustomers || 0),
       icon: Users,
       color: "bg-purple-500",
     },
