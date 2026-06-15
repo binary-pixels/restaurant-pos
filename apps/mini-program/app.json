@@ -12,7 +12,8 @@
     "pages/settings/settings",
     "pages/checkin/checkin",
     "pages/lucky-wheel/lucky-wheel",
-    "pages/redeem/redeem"
+    "pages/redeem/redeem",
+    "pages/scratch-card/scratch-card"
   ],
   "tabBar": {
     "color": "#999999",

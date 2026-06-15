@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="header">
+    <text class="title">🎫 刮刮乐</text>
+    <text class="desc">刮开涂层，看看今天的手气！</text>
+  </view>
+
+  <view class="card-container">
+    <view class="card" wx:if="{{!scratched}}">
+      <text class="card-hint">用手指刮开涂层</text>
+    </view>
+    <canvas canvas-id="scratchCanvas" class="scratch-canvas" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" wx:if="{{!scratched}}"></canvas>
+    <view class="result-card" wx:if="{{scratched}}">
+      <text class="result-icon">{{result.type === 'none' ? '😅' : '🎉'}}</text>
+      <text class="result-text">{{result.name}}</text>
+      <view class="btn btn-outline" bindtap="reset" style="margin-top:24rpx;width:200rpx">再来一次</view>
+    </view>
+  </view>
+</view>
