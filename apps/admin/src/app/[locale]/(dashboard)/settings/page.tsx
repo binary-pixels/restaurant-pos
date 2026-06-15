@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { PageHeader } from "@/components/shared/page-header";
-import { Save, Store, CreditCard, Bell, Truck, Smartphone, PanelTop } from "lucide-react";
+import { Save, Store, CreditCard, Bell, Truck, Smartphone, PanelTop, Download } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ const configSections = [
   { href: "/settings", label: "支付配置", icon: CreditCard, desc: "微信支付/支付宝商户" },
   { href: "/settings", label: "配送设置", icon: Truck, desc: "达达/蜂鸟/闪送聚合配送" },
   { href: "/settings/audit-logs", label: "操作日志", icon: Bell, desc: "系统操作审计追踪" },
+  { href: "/settings/export", label: "数据导出", icon: Download, desc: "订单/客户/商品 CSV 下载" },
   { href: "/settings", label: "小程序管理", icon: Smartphone, desc: "头像/名称/版本发布" },
 ];
 
