@@ -16,11 +16,16 @@ export async function POST(req: NextRequest) {
   const customer = await prisma.customer.findFirst({ where: { phone: token } });
   if (!customer) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Mark as used and add balance
-  await prisma.giftCode.update({
-    where: { id: giftCode.id },
+  // Atomic update: only succeeds if isUsed is still false
+  // This prevents race condition when two users redeem simultaneously
+  const result = await prisma.giftCode.updateMany({
+    where: { id: giftCode.id, isUsed: false },
     data: { isUsed: true, usedBy: customer.id, usedAt: new Date() },
   });
+
+  if (result.count === 0) {
+    return NextResponse.json({ error: "该兑换码已被使用" }, { status: 400 });
+  }
 
   await prisma.customer.update({
     where: { id: customer.id },
