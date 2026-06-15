@@ -153,7 +153,7 @@ export async function closeOrder(orderId: string) {
   if (order.customerId) {
     await prisma.customer.update({
       where: { id: order.customerId },
-      data: { totalSpent: { increment: order.total }, visitCount: { increment: 1 }, lastVisitAt: new Date(), points: { increment: Math.floor(order.total) } },
+      data: { totalSpent: { increment: order.total }, visitCount: { increment: 1 }, stamps: { increment: 1 }, lastVisitAt: new Date(), points: { increment: Math.floor(order.total) } },
     });
   }
 

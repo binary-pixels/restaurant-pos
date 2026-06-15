@@ -21,5 +21,6 @@ export async function GET(req: NextRequest) {
     balance: customer.balance,
     totalSpent: customer.totalSpent,
     visitCount: customer.visitCount,
+    stamps: customer.stamps,
   });
 }

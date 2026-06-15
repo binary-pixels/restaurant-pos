@@ -60,6 +60,10 @@
       <text>🎫 刮刮乐</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/stamps/stamps">
+      <text>🏆 集章有礼</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="goPage" data-url="/pages/coupons/coupons">
       <text>🎁 优惠券</text>
       <text class="text-gray">▶</text>

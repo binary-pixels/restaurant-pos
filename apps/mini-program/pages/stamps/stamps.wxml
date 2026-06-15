@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="header">
+    <text class="title">🏆 集章有礼</text>
+    <text class="desc">每消费一次集 1 枚印章，集满 {{threshold}} 枚兑奖！</text>
+  </view>
+
+  <view class="card-container">
+    <view class="stamp-count">
+      <text class="count-num">{{stamps}}</text>
+      <text class="count-label">已集印章</text>
+    </view>
+
+    <view class="stamp-grid">
+      <view class="stamp {{index < stamps ? 'active' : ''}}" wx:for="{{[1,2,3,4,5,6,7,8,9,10]}}" wx:key="*this" wx:if="{{index <= threshold}}">
+        <text>{{index <= stamps ? '✅' : '○'}}</text>
+      </view>
+    </view>
+
+    <view class="reward-info" wx:if="{{stamps >= threshold}}">
+      <text class="reward-text">🎉 恭喜集满！可获得 {{reward}} 元优惠券</text>
+    </view>
+    <view class="btn btn-primary" wx:if="{{stamps >= threshold && !redeemed}}" bindtap="doRedeem">兑换奖励</view>
+    <view class="btn checked" wx:if="{{redeemed}}" style="background:#d1fae5;color:#065f46">✅ 已兑换</view>
+  </view>
+</view>

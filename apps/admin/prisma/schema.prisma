@@ -84,6 +84,7 @@ model Customer {
   balance     Float     @default(0)
   totalSpent  Float     @default(0)
   visitCount  Int       @default(0)
+  stamps      Int       @default(0)
   lastVisitAt DateTime?
   tier         String    @default("REGULAR")
   referralCode String?   @unique

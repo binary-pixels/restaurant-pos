@@ -13,7 +13,8 @@
     "pages/checkin/checkin",
     "pages/lucky-wheel/lucky-wheel",
     "pages/redeem/redeem",
-    "pages/scratch-card/scratch-card"
+    "pages/scratch-card/scratch-card",
+    "pages/stamps/stamps"
   ],
   "tabBar": {
     "color": "#999999",
