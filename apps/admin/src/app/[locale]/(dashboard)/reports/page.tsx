@@ -234,6 +234,28 @@ export default function ReportsPage() {
             </div>
           </div>
 
+          {/* Category Sales */}
+          {data.categoryData && data.categoryData.length > 0 && (
+            <div className="bg-white rounded-xl border p-6 mb-6">
+              <h3 className="font-semibold text-gray-900 mb-4">分类销售占比</h3>
+              <div className="space-y-3">
+                {data.categoryData.map((c: any) => {
+                  const maxVal = data.categoryData[0].value;
+                  return (
+                    <div key={c.name} className="flex items-center gap-3 text-sm">
+                      <span className="w-20 text-gray-600">{c.name}</span>
+                      <div className="flex-1 h-6 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-indigo-400 rounded-full" style={{ width: (c.value / maxVal * 100) + "%" }} />
+                      </div>
+                      <span className="w-24 text-right font-medium">{formatCurrency(c.value)}</span>
+                      <span className="w-16 text-right text-gray-400">{data.totalRevenue > 0 ? (c.value / data.totalRevenue * 100).toFixed(0) : "0"}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Top Products */}
           <div className="bg-white rounded-xl border p-6">
             <h3 className="font-semibold text-gray-900 mb-4">热销菜品 Top 10（含利润分析）</h3>

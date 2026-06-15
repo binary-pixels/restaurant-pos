@@ -159,6 +159,18 @@ export async function GET(req: Request) {
     prevOrders: 0,
   });
 
+  // Category sales
+  const categoryItems = await prisma.orderItem.findMany({
+    where: { order: { storeId, createdAt: { gte: start } } },
+    include: { product: { select: { category: { select: { name: true } } } } },
+  });
+  const categorySales: Record<string, number> = {};
+  for (const item of categoryItems) {
+    const catName = item.product?.category?.name || "未分类";
+    categorySales[catName] = (categorySales[catName] || 0) + item.subtotal;
+  }
+  const categoryData = Object.entries(categorySales).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
+
   // Fetch previous period for comparison
   const periodLength = new Date().getTime() - start.getTime();
   const prevStart = new Date(start.getTime() - periodLength);
@@ -180,5 +192,6 @@ export async function GET(req: Request) {
     totalProfit, totalCost,
     prevRevenue: prevPayments._sum.amount || 0,
     prevOrders: prevOrders,
+    categoryData,
   });
 }
