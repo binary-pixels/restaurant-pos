@@ -16,7 +16,7 @@ export default function GiftCodesPage() {
   async function generate() {
     const res = await fetch("/api/gift-codes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, count }) });
     const data = await res.json();
-    if (data.codes) setCodes([...data.codes, ...codes]);
+    if (data.codes) setCodes([...(data.codes as any[]), ...codes]);
   }
 
   function copyAll() {
