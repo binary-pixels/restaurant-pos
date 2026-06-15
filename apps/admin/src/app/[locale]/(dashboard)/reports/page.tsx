@@ -6,7 +6,7 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { DollarSign, ShoppingCart, TrendingUp, Users, Loader2, Calendar } from "lucide-react";
+import { DollarSign, ShoppingCart, TrendingUp, Users, Loader2, Calendar, TrendingDown, Percent } from "lucide-react";
 import { formatCurrency } from "@pos/shared";
 import { cn } from "@/lib/utils";
 
@@ -82,9 +82,9 @@ export default function ReportsPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {[
               { label: "营业实收", value: formatCurrency(data.totalRevenue), icon: DollarSign, color: "bg-blue-500" },
-              { label: "订单数", value: String(data.totalOrders), icon: ShoppingCart, color: "bg-green-500" },
-              { label: "人均消费", value: formatCurrency(data.avgOrderValue), icon: Users, color: "bg-purple-500" },
-              { label: "支付渠道", value: Object.keys(data.methodTotals || {}).length + " 种", icon: TrendingUp, color: "bg-orange-500" },
+              { label: "毛利润", value: formatCurrency(data.totalProfit || 0), icon: TrendingUp, color: "bg-green-500" },
+              { label: "利润率", value: (data.totalRevenue > 0 ? ((data.totalProfit || 0) / data.totalRevenue * 100).toFixed(1) : "0") + "%", icon: Percent, color: "bg-emerald-500" },
+              { label: "总成本", value: formatCurrency(data.totalCost || 0), icon: TrendingDown, color: "bg-red-500" },
             ].map((s) => (
               <div key={s.label} className="bg-white rounded-xl border p-4">
                 <div className="flex items-center gap-3">
@@ -218,7 +218,7 @@ export default function ReportsPage() {
 
           {/* Top Products */}
           <div className="bg-white rounded-xl border p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">热销菜品 Top 10</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">热销菜品 Top 10（含利润分析）</h3>
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b">
                 <tr>
@@ -226,6 +226,9 @@ export default function ReportsPage() {
                   <th className="text-left py-3 px-4 font-medium text-gray-500">菜品</th>
                   <th className="text-right py-3 px-4 font-medium text-gray-500">销量</th>
                   <th className="text-right py-3 px-4 font-medium text-gray-500">销售额</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-500">成本</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-500">利润</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-500">利润率</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -237,6 +240,9 @@ export default function ReportsPage() {
                     <td className="py-3 px-4 font-medium text-gray-900">{p.name}</td>
                     <td className="py-3 px-4 text-right">{p.quantity}</td>
                     <td className="py-3 px-4 text-right font-medium">{formatCurrency(p.revenue)}</td>
+                    <td className="py-3 px-4 text-right text-gray-500">{formatCurrency(p.cost || 0)}</td>
+                    <td className="py-3 px-4 text-right font-medium text-green-600">{formatCurrency(p.profit || 0)}</td>
+                    <td className="py-3 px-4 text-right text-gray-500">{p.profitRate}%</td>
                   </tr>
                 ))}
               </tbody>

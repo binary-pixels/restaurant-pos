@@ -60,11 +60,25 @@ export async function GET(req: Request) {
   });
   const productSales: Record<string, { name: string; quantity: number; revenue: number }> = {};
   for (const item of orderItems) {
-    if (!productSales[item.productId]) productSales[item.productId] = { name: item.productName, quantity: 0, revenue: 0 };
+    if (!productSales[item.productId]) productSales[item.productId] = { name: item.productName, quantity: 0, revenue: 0, cost: 0 };
     productSales[item.productId].quantity += item.quantity;
     productSales[item.productId].revenue += item.subtotal;
   }
-  const topProducts = Object.values(productSales).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
+  // Look up product costs
+  for (const pid of Object.keys(productSales)) {
+    const product = await prisma.product.findUnique({ where: { id: pid }, select: { costPrice: true } });
+    if (product?.costPrice) {
+      productSales[pid].cost = product.costPrice * productSales[pid].quantity;
+    }
+  }
+  const topProducts = Object.values(productSales).map((p) => ({
+    ...p,
+    profit: p.revenue - p.cost,
+    profitRate: p.revenue > 0 ? ((p.revenue - p.cost) / p.revenue * 100).toFixed(1) : "0",
+  })).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
+
+  const totalProfit = Object.values(productSales).reduce((s, p) => s + (p.revenue - p.cost), 0);
+  const totalCost = Object.values(productSales).reduce((s, p) => s + p.cost, 0);
 
   // Trend data depends on mode
   const trend: { date: string; revenue: number; orders: number }[] = [];
@@ -138,5 +152,7 @@ export async function GET(req: Request) {
     methodTotals, typeCount, topProducts,
     trend, mode,
     avgOrderValue: orders.length > 0 ? totalRevenue / orders.length : 0,
+    totalProfit,
+    totalCost,
   });
 }
