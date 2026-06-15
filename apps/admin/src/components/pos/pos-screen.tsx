@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { usePosStore, selectCartTotal, selectCartCount, selectCartSubtotal } from "@/stores/pos-store";
@@ -82,6 +82,24 @@ export function PosScreen({ zones, categories, storeId, cashierId }: Props) {
     },
     [store, storeId, cashierId, router]
   );
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const key = e.key;
+      if (key === "Escape") { setShowPayment(false); setShowTransfer(false); setSpecProduct(null); }
+      if (key === "Enter" && cartCount > 0) {
+        if (store.orderType === "DINE_IN" && !store.selectedTableId) return;
+        setShowPayment(true);
+      }
+      if (key === "F1") store.setOrderType("DINE_IN");
+      if (key === "F2") store.setOrderType("TAKEOUT");
+      if (key === "F3") store.setOrderType("DELIVERY");
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [cartCount, store.orderType, store.selectedTableId]);
 
   const allTables = zones.flatMap((z: any) =>
     z.tables.map((t: any) => ({ ...t, zoneName: z.name }))
