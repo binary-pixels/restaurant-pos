@@ -10,24 +10,10 @@ const DEFAULT_PRIZES = [
   { name: "20积分", type: "points", value: 20, weight: 5 },
 ];
 
-export async function GET(req: NextRequest) {
-  const token = req.headers.get("Authorization")?.replace("Bearer ", "");
-  const phone = token || "";
-  const today = new Date().toISOString().slice(0, 10);
-
-  // Check daily limit (1 spin per day)
-  const todaySpins = await prisma.$queryRawUnsafe<{ count: number }[]>(
-    `SELECT COUNT(*) as count FROM CouponUsage WHERE createdAt >= ? AND createdAt < ?`,
-    today, new Date(Date.now() + 86400000).toISOString().slice(0, 10)
-  );
-
-  const canSpin = true; // Allow multiple spins for demo
-
-  // Load prizes from config or defaults
+export async function GET() {
   const config = await prisma.storeConfig.findFirst({ where: { key: "lucky_wheel_prizes" } });
   const prizes = config ? JSON.parse(config.value) : DEFAULT_PRIZES;
-
-  return NextResponse.json({ prizes: prizes.map((p: any) => ({ name: p.name, type: p.type, value: p.value })), canSpin });
+  return NextResponse.json({ prizes: prizes.map((p: any) => ({ name: p.name, type: p.type, value: p.value })) });
 }
 
 export async function POST(req: NextRequest) {
@@ -37,7 +23,6 @@ export async function POST(req: NextRequest) {
   const customer = await prisma.customer.findFirst({ where: { phone: token } });
   if (!customer) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Load prizes
   const config = await prisma.storeConfig.findFirst({ where: { key: "lucky_wheel_prizes" } });
   const prizes: any[] = config ? JSON.parse(config.value) : DEFAULT_PRIZES;
 
@@ -50,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (rand <= 0) { selected = p; break; }
   }
 
-  // Award the prize
+  // Award
   if (selected.type === "points") {
     await prisma.customer.update({ where: { id: customer.id }, data: { points: { increment: selected.value } } });
   } else if (selected.type === "coupon") {
@@ -67,8 +52,6 @@ export async function POST(req: NextRequest) {
         usageLimit: 1,
       },
     });
-    // Record usage for daily limit
-    await prisma.couponUsage.create({ data: { couponId: "", orderId: null, orderNo: null, amount: 0 } });
   }
 
   return NextResponse.json({
