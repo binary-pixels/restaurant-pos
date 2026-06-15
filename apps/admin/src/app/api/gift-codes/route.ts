@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid: amount>0, count 1-100" }, { status: 400 });
   }
 
-  const codes = [];
+  const codes: any[] = [];
   for (let i = 0; i < count; i++) {
     const code = "GC" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
     const gc = await prisma.giftCode.create({
