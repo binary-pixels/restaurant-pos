@@ -119,10 +119,6 @@ page {
   color: #ef4444;
   font-weight: bold;
 }
-.price::before {
-  content: '¥';
-  font-size: 24rpx;
-}
 
 /* Empty state */
 .empty {
