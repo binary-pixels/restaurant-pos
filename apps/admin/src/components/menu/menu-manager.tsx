@@ -154,7 +154,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
                       <AlertTriangle className="w-4 h-4 text-amber-500"  />
                     )}
                     {!product.isActive && (
-                      <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">已下架</span>
+                      <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded cursor-pointer hover:bg-green-100 hover:text-green-600" onClick={async (e) => { e.stopPropagation(); await updateProduct(product.id, { isActive: true }); router.refresh(); }} title="点击重新上架">已下架</span>
                     )}
                   </div>
                   {product.specs.length > 0 && (

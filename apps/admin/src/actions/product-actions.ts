@@ -90,7 +90,9 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string) {
-  await prisma.product.delete({ where: { id } });
+  // Soft delete: set isActive = false instead of hard delete
+  // This prevents FK errors when order items reference this product
+  await prisma.product.update({ where: { id }, data: { isActive: false } });
   revalidatePath("/[locale]/menu");
 }
 
