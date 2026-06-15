@@ -152,6 +152,15 @@ export default function SettingsPage() {
               await fetch("/api/marketing-config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "free_delivery_promo", enabled: e.target.checked }) });
             }} className="w-5 h-5 rounded border-gray-300 text-blue-600" />
           </label>
+          <label className="flex items-center justify-between py-2">
+            <div>
+              <p className="font-medium text-gray-900">茶位费</p>
+              <p className="text-xs text-gray-500">堂食按 ¥2/人 收取</p>
+            </div>
+            <input type="checkbox" defaultChecked={false} onChange={async (e) => {
+              await fetch("/api/marketing-config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "table_charge", enabled: e.target.checked, amount: 2 }) });
+            }} className="w-5 h-5 rounded border-gray-300 text-blue-600" />
+          </label>
         </div>
       </div>
     </div>

@@ -132,7 +132,14 @@ Page({
         label = '配送费 ¥' + fee.toFixed(2);
       }
     }
-    var total = subtotal + fee - newCustDiscount - volumeDiscount;
+    // Table charge (茶位费) for dine-in
+    var tc = app.globalData.tableCharge || { enabled: false, amount: 0 };
+    var tableCharge = 0;
+    if (tc.enabled && this.data.orderType === 'DINE_IN') {
+      tableCharge = tc.amount * this.data.guests;
+    }
+
+    var total = subtotal + fee - newCustDiscount - volumeDiscount + tableCharge;
     if (total < 0) total = 0;
     this.setData({
       cart: cart,
@@ -142,6 +149,7 @@ Page({
       volumeLabel: volumeLabel,
       deliveryFee: fee,
       deliveryLabel: label,
+      tableCharge: tableCharge,
       total: total.toFixed(2),
     });
   },
