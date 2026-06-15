@@ -11,7 +11,7 @@ export default function GiftCodesPage() {
   const [amount, setAmount] = useState(100);
   const [count, setCount] = useState(10);
 
-  useEffect(() => { fetch("/api/gift-codes").then((r) => r.json()).then((d) => setCodes(d.codes || [])).finally(() => setLoading(false)); }, []);
+  useEffect(() => { fetch("/api/gift-codes").then((r) => r.json()).then((d: any) => setCodes(d.codes || [])).finally(() => setLoading(false)); }, []);
 
   async function generate() {
     const res = await fetch("/api/gift-codes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, count }) });
