@@ -1,0 +1,11 @@
+<view class="page">
+  <view class="card">
+    <text class="title">💳 兑换礼品卡</text>
+    <text class="desc">输入兑换码充值余额</text>
+    <input class="input" placeholder="输入兑换码" value="{{code}}" bindinput="onInput" maxlength="20" style="text-align:center;font-size:36rpx;font-weight:bold;letter-spacing:4rpx" />
+    <view class="btn btn-primary" bindtap="doRedeem" style="margin-top:32rpx">兑换</view>
+  </view>
+  <view class="result" wx:if="{{result}}">
+    <text>{{result}}</text>
+  </view>
+</view>

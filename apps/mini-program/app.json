@@ -11,7 +11,8 @@
     "pages/topup/topup",
     "pages/settings/settings",
     "pages/checkin/checkin",
-    "pages/lucky-wheel/lucky-wheel"
+    "pages/lucky-wheel/lucky-wheel",
+    "pages/redeem/redeem"
   ],
   "tabBar": {
     "color": "#999999",

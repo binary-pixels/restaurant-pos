@@ -426,3 +426,14 @@ model CheckIn {
 
   @@unique([customerId, date])
 }
+
+model GiftCode {
+  id         String    @id @default(cuid())
+  storeId    String
+  code       String    @unique
+  amount     Float
+  isUsed     Boolean   @default(false)
+  usedBy     String?
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+}

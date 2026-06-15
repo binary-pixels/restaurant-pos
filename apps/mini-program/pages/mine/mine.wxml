@@ -64,6 +64,10 @@
       <text>💳 余额充值</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/redeem/redeem">
+      <text>🎫 兑换礼品卡</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="goPage" data-url="/pages/settings/settings">
       <text>⚙️ 设置</text>
       <text class="text-gray">▶</text>
