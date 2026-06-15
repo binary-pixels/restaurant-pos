@@ -168,7 +168,9 @@ export async function closeOrder(orderId: string) {
         await prisma.customer.update({
           where: { id: referrer.id },
           data: { totalCommission: { increment: commission }, balance: { increment: commission } },
-    });
+        });
+      }
+    }
   }
 
   await prisma.auditLog.create({
