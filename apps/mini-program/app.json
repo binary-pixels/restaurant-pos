@@ -15,7 +15,8 @@
     "pages/redeem/redeem",
     "pages/scratch-card/scratch-card",
     "pages/stamps/stamps",
-    "pages/group-buy/group-buy"
+    "pages/group-buy/group-buy",
+    "pages/distributor/distributor"
   ],
   "tabBar": {
     "color": "#999999",

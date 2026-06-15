@@ -155,6 +155,20 @@ export async function closeOrder(orderId: string) {
       where: { id: order.customerId },
       data: { totalSpent: { increment: order.total }, visitCount: { increment: 1 }, stamps: { increment: 1 }, lastVisitAt: new Date(), points: { increment: Math.floor(order.total) } },
     });
+
+    // Track distributor commission
+    const cust = await prisma.customer.findUnique({ where: { id: order.customerId! } });
+    if (cust?.referredBy) {
+      const referrer = await prisma.customer.findFirst({ where: { referralCode: cust.referredBy } });
+      if (referrer?.isDistributor) {
+        const commission = order.total * (referrer.commissionRate / 100);
+        await prisma.commission.create({
+          data: { customerId: referrer.id, orderId: order.id, orderAmount: order.total, rate: referrer.commissionRate, amount: commission },
+        });
+        await prisma.customer.update({
+          where: { id: referrer.id },
+          data: { totalCommission: { increment: commission }, balance: { increment: commission } },
+    });
   }
 
   await prisma.auditLog.create({

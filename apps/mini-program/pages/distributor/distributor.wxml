@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="header-card">
+    <text class="h-title">💰 分销中心</text>
+    <text class="h-desc">邀请好友下单，赚取佣金！</text>
+  </view>
+
+  <view class="stats">
+    <view class="stat">
+      <text class="stat-val">¥{{totalCommission}}</text>
+      <text class="stat-label">累计佣金</text>
+    </view>
+    <view class="stat">
+      <text class="stat-val">{{referralCount}}人</text>
+      <text class="stat-label">已邀请</text>
+    </view>
+    <view class="stat">
+      <text class="stat-val">{{commissionRate}}%</text>
+      <text class="stat-label">佣金率</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{!isDistributor}}">
+    <view class="btn btn-primary" bindtap="becomeDist">成为分销员</view>
+  </view>
+
+  <view class="card" wx:else>
+    <text class="label">我的邀请码</text>
+    <text class="code">{{referralCode}}</text>
+    <text class="tip">好友注册时输入此码，TA的每笔订单你都能获得佣金</text>
+  </view>
+
+  <view class="card" wx:if="{{commissions.length > 0}}">
+    <text class="label">佣金记录</text>
+    <view class="comm-item" wx:for="{{commissions}}" wx:key="createdAt">
+      <text>订单 ¥{{item.orderAmount}} × {{item.rate}}%</text>
+      <text class="price">+¥{{item.amount}}</text>
+    </view>
+  </view>
+</view>

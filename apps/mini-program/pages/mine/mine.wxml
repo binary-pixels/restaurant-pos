@@ -60,6 +60,10 @@
       <text>👥 拼团优惠</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/distributor/distributor">
+      <text>💰 分销中心</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="goPage" data-url="/pages/scratch-card/scratch-card">
       <text>🎫 刮刮乐</text>
       <text class="text-gray">▶</text>

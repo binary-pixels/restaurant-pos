@@ -87,9 +87,12 @@ model Customer {
   stamps      Int       @default(0)
   lastVisitAt DateTime?
   tier         String    @default("REGULAR")
-  referralCode String?   @unique
-  referredBy   String?
-  tags         String?
+  referralCode    String?   @unique
+  referredBy      String?
+  isDistributor   Boolean   @default(false)
+  commissionRate  Float     @default(5)
+  totalCommission Float     @default(0)
+  tags            String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -461,4 +464,14 @@ model GroupBuyMember {
   createdAt DateTime @default(now())
 
   @@unique([groupId, customerId])
+}
+
+model Commission {
+  id           String   @id @default(cuid())
+  customerId   String
+  orderId      String?
+  orderAmount  Float
+  rate         Float
+  amount       Float
+  createdAt    DateTime @default(now())
 }
