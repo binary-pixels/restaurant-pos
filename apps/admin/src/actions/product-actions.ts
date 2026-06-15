@@ -79,7 +79,12 @@ export async function updateProduct(
     isActive?: boolean;
   }
 ) {
-  const product = await prisma.product.update({ where: { id }, data });
+  // Convert empty string to null for DateTime fields
+  const cleanData: any = { ...data };
+  if (cleanData.discountEnd === "" || cleanData.discountEnd === undefined) {
+    cleanData.discountEnd = null;
+  }
+  const product = await prisma.product.update({ where: { id }, data: cleanData });
   revalidatePath("/[locale]/menu");
   return product;
 }
