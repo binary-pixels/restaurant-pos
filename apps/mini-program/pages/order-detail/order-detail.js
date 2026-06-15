@@ -89,11 +89,25 @@ Page({
       title: '取消订单',
       content: '确定取消此订单？',
       success: function(res) {
-        if (res.confirm) {
-          that.loadOrder(that.data.orderId);
-          // Cancel via API (same as admin cancel)
-          wx.showToast({ title: '请联系店员取消', icon: 'none' });
-        }
+        if (!res.confirm) return;
+        var token = app.globalData.token || '';
+        wx.request({
+          url: app.globalData.baseUrl + '/api/mini-program/orders?id=' + that.data.orderId,
+          method: 'DELETE',
+          header: { 'Authorization': 'Bearer ' + token },
+          success: function(delRes) {
+            if (delRes.statusCode === 200 && delRes.data && delRes.data.success) {
+              wx.showToast({ title: '已取消', icon: 'success' });
+              that.loadOrder(that.data.orderId);
+            } else {
+              var msg = (delRes.data && delRes.data.error) || '取消失败';
+              wx.showToast({ title: msg, icon: 'none' });
+            }
+          },
+          fail: function() {
+            wx.showToast({ title: '网络错误', icon: 'none' });
+          },
+        });
       },
     });
   },
