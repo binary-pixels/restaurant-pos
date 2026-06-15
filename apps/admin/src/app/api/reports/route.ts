@@ -58,7 +58,7 @@ export async function GET(req: Request) {
     where: { order: { storeId, createdAt: { gte: start } } },
     include: { product: { select: { name: true } } },
   });
-  const productSales: Record<string, { name: string; quantity: number; revenue: number }> = {};
+  const productSales: Record<string, { name: string; quantity: number; revenue: number; cost: number }> = {};
   for (const item of orderItems) {
     if (!productSales[item.productId]) productSales[item.productId] = { name: item.productName, quantity: 0, revenue: 0, cost: 0 };
     productSales[item.productId].quantity += item.quantity;
