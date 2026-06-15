@@ -11,6 +11,7 @@ const modules = [
   { href: "/marketing", label: "套餐推广", desc: "组合套餐优惠", icon: Gift, color: "bg-purple-500" },
   { href: "/marketing/members", label: "会员体系", desc: "等级/积分/储值", icon: Users, color: "bg-amber-500" },
   { href: "/marketing/ratings", label: "评价管理", desc: "顾客评价/评星统计", icon: Star, color: "bg-yellow-500" },
+  { href: "/marketing/birthdays", label: "生日有礼", desc: "客户生日提醒/发券", icon: Gift, color: "bg-pink-500" },
   { href: "/marketing", label: "互动玩法", desc: "转盘/刮刮乐/签到", icon: Sparkles, color: "bg-green-500" },
   { href: "/marketing", label: "满量折扣", desc: "第N件优惠/买赠", icon: BadgePercent, color: "bg-pink-500" },
 ];
