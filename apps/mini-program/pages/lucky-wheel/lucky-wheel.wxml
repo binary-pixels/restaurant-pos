@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="header">
+    <text class="title">🎡 幸运转盘</text>
+    <text class="subtitle">每天一次，试试手气！</text>
+  </view>
+
+  <view class="wheel-container">
+    <view class="wheel {{spinning ? 'spinning' : ''}}" style="transform: rotate({{rotate}}deg)">
+      <view class="prize-item" wx:for="{{prizes}}" wx:key="name" style="transform: rotate({{360 / prizes.length * index}}deg); color: {{index % 2 === 0 ? '#fff' : '#333'}}">
+        <text class="prize-name">{{item.name.length > 4 ? item.name.slice(0,4) + '...' : item.name}}</text>
+      </view>
+    </view>
+    <view class="wheel-center" bindtap="doSpin">
+      <text>抽奖</text>
+    </view>
+  </view>
+
+  <view class="result" wx:if="{{result}}">
+    <text class="result-text">🎉 恭喜获得：{{result.name}}！</text>
+  </view>
+</view>

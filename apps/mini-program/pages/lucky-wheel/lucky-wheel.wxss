@@ -1,0 +1,13 @@
+.page { min-height: 100vh; background: linear-gradient(135deg, #1e1b4b, #312e81); display: flex; flex-direction: column; align-items: center; padding-top: 60rpx; }
+.header { text-align: center; margin-bottom: 60rpx; }
+.title { font-size: 44rpx; font-weight: bold; color: #fbbf24; }
+.subtitle { font-size: 28rpx; color: #a5b4fc; display: block; margin-top: 8rpx; }
+
+.wheel-container { position: relative; width: 580rpx; height: 580rpx; }
+.wheel { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#fbbf24 0deg 60deg, #1e3a5f 60deg 120deg, #fbbf24 120deg 180deg, #1e3a5f 180deg 240deg, #fbbf24 240deg 300deg, #1e3a5f 300deg 360deg); position: relative; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+.prize-item { position: absolute; top: 0; left: 50%; width: 0; height: 50%; transform-origin: bottom center; display: flex; align-items: flex-start; justify-content: center; padding-top: 20rpx; font-size: 24rpx; font-weight: bold; }
+.prize-name { transform: rotate(90deg); white-space: nowrap; }
+.wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140rpx; height: 140rpx; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 32rpx; font-weight: bold; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.3); z-index: 10; }
+
+.result { margin-top: 60rpx; background: rgba(255,255,255,0.1); border-radius: 16rpx; padding: 24rpx 48rpx; }
+.result-text { font-size: 32rpx; color: #fbbf24; font-weight: bold; }

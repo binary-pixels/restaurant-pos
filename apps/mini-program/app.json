@@ -10,7 +10,8 @@
     "pages/coupons/coupons",
     "pages/topup/topup",
     "pages/settings/settings",
-    "pages/checkin/checkin"
+    "pages/checkin/checkin",
+    "pages/lucky-wheel/lucky-wheel"
   ],
   "tabBar": {
     "color": "#999999",

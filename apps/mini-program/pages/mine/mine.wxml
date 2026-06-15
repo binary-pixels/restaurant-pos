@@ -45,6 +45,10 @@
       <text>📅 每日签到</text>
       <text class="text-gray">▶</text>
     </view>
+    <view class="menu-item" bindtap="goPage" data-url="/pages/lucky-wheel/lucky-wheel">
+      <text>🎡 幸运转盘</text>
+      <text class="text-gray">▶</text>
+    </view>
     <view class="menu-item" bindtap="goPage" data-url="/pages/coupons/coupons">
       <text>🎁 优惠券</text>
       <text class="text-gray">▶</text>
