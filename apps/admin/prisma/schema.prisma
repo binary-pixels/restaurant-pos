@@ -501,3 +501,14 @@ model Announcement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Schedule {
+  id        String   @id @default(cuid())
+  storeId   String
+  userId    String
+  userName  String
+  date      String
+  shift     String
+  note      String?
+  createdAt DateTime @default(now())
+}
