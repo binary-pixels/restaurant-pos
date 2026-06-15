@@ -29,7 +29,7 @@ export default function BirthdaysPage() {
       <PageHeader title="生日管理" description={MONTHS[currentMonth] + "生日客户: " + data.thisMonth.length + " 人"} />
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-xl border p-5">
-          <h3 className="font-semibold flex items-center gap-2"><Cake className="w-5 h-5 text-pink-500" />本月生日 ({{}}.length)</h3>
+          <h3 className="font-semibold flex items-center gap-2"><Cake className="w-5 h-5 text-pink-500" />本月生日 ({data.thisMonth.length}人)</h3>
           <p className="text-3xl font-bold text-pink-500 mt-2">{data.thisMonth.length}</p>
         </div>
       </div>
