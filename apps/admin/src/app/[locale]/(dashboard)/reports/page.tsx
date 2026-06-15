@@ -6,7 +6,7 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { DollarSign, ShoppingCart, TrendingUp, Users, Loader2, Calendar, TrendingDown, Percent } from "lucide-react";
+import { DollarSign, ShoppingCart, TrendingUp, Users, Loader2, Calendar, TrendingDown, Percent, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import { formatCurrency } from "@pos/shared";
 import { cn } from "@/lib/utils";
 
@@ -79,12 +79,12 @@ export default function ReportsPage() {
       ) : !data ? null : (
         <>
           {/* Metric Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             {[
-              { label: "营业实收", value: formatCurrency(data.totalRevenue), icon: DollarSign, color: "bg-blue-500" },
-              { label: "毛利润", value: formatCurrency(data.totalProfit || 0), icon: TrendingUp, color: "bg-green-500" },
-              { label: "利润率", value: (data.totalRevenue > 0 ? ((data.totalProfit || 0) / data.totalRevenue * 100).toFixed(1) : "0") + "%", icon: Percent, color: "bg-emerald-500" },
-              { label: "总成本", value: formatCurrency(data.totalCost || 0), icon: TrendingDown, color: "bg-red-500" },
+              { label: "营业实收", value: formatCurrency(data.totalRevenue), icon: DollarSign, color: "bg-blue-500", prev: data.prevRevenue, key: "revenue" },
+              { label: "毛利润", value: formatCurrency(data.totalProfit || 0), icon: TrendingUp, color: "bg-green-500", prev: null, key: "profit" },
+              { label: "利润率", value: (data.totalRevenue > 0 ? ((data.totalProfit || 0) / data.totalRevenue * 100).toFixed(1) : "0") + "%", icon: Percent, color: "bg-emerald-500", prev: null, key: "rate" },
+              { label: "订单数", value: String(data.totalOrders), icon: ShoppingCart, color: "bg-indigo-500", prev: data.prevOrders, key: "orders" },
             ].map((s) => (
               <div key={s.label} className="bg-white rounded-xl border p-4">
                 <div className="flex items-center gap-3">
@@ -92,6 +92,24 @@ export default function ReportsPage() {
                   <div>
                     <p className="text-sm text-gray-500">{s.label}</p>
                     <p className="text-2xl font-bold text-gray-900">{s.value}</p>
+                    {s.prev != null && s.prev > 0 && s.key === "revenue" && (
+                      <p className="text-xs flex items-center gap-0.5 mt-0.5">
+                        {data.totalRevenue > s.prev ? <ArrowUp className="w-3 h-3 text-green-500" /> : data.totalRevenue < s.prev ? <ArrowDown className="w-3 h-3 text-red-500" /> : <Minus className="w-3 h-3 text-gray-400" />}
+                        <span className={data.totalRevenue >= s.prev ? "text-green-600" : "text-red-600"}>
+                          {s.prev > 0 ? ((data.totalRevenue - s.prev) / s.prev * 100).toFixed(0) : "0"}%
+                        </span>
+                        <span className="text-gray-400 ml-1">环比</span>
+                      </p>
+                    )}
+                    {s.prev != null && s.prev > 0 && s.key === "orders" && (
+                      <p className="text-xs flex items-center gap-0.5 mt-0.5">
+                        {data.totalOrders > s.prev ? <ArrowUp className="w-3 h-3 text-green-500" /> : data.totalOrders < s.prev ? <ArrowDown className="w-3 h-3 text-red-500" /> : <Minus className="w-3 h-3 text-gray-400" />}
+                        <span className={data.totalOrders >= s.prev ? "text-green-600" : "text-red-600"}>
+                          {s.prev > 0 ? ((data.totalOrders - s.prev) / s.prev * 100).toFixed(0) : "0"}%
+                        </span>
+                        <span className="text-gray-400 ml-1">环比</span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

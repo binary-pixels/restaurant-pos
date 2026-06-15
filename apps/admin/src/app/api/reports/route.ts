@@ -154,5 +154,31 @@ export async function GET(req: Request) {
     avgOrderValue: orders.length > 0 ? totalRevenue / orders.length : 0,
     totalProfit,
     totalCost,
+    // Previous period comparison
+    prevRevenue: 0,
+    prevOrders: 0,
+  });
+
+  // Fetch previous period for comparison
+  const periodLength = new Date().getTime() - start.getTime();
+  const prevStart = new Date(start.getTime() - periodLength);
+  const prevEnd = new Date(start.getTime() - 1);
+
+  const prevPayments = await prisma.payment.aggregate({
+    where: { status: "SUCCESS", paidAt: { gte: prevStart, lt: prevEnd }, order: { storeId } },
+    _sum: { amount: true },
+  });
+  const prevOrders = await prisma.order.count({
+    where: { storeId, createdAt: { gte: prevStart, lt: prevEnd } },
+  });
+
+  return NextResponse.json({
+    totalRevenue, totalOrders: orders.length,
+    methodTotals, typeCount, topProducts,
+    trend, mode,
+    avgOrderValue: orders.length > 0 ? totalRevenue / orders.length : 0,
+    totalProfit, totalCost,
+    prevRevenue: prevPayments._sum.amount || 0,
+    prevOrders: prevOrders,
   });
 }
