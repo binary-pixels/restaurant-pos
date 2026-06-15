@@ -129,6 +129,19 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
         >
           <Plus className="w-4 h-4 inline mr-1" />{t("addProduct")}
         </button>
+        <label className="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50 cursor-pointer">
+          📄 批量导入
+          <input type="file" accept=".csv" className="hidden" onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const fd = new FormData();
+            fd.append("file", file);
+            const res = await fetch("/api/products/import", { method: "POST", body: fd });
+            const data = await res.json();
+            alert("导入完成: " + data.success + " 成功, " + data.errors + " 失败");
+            router.refresh();
+          }} />
+        </label>
       </div>
 
       {/* Product List */}
