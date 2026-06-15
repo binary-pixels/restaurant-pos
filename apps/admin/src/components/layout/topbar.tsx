@@ -9,7 +9,7 @@ import {
   Bell,
   ChevronDown,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -22,6 +22,14 @@ export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: P
   const t = useTranslations("auth");
   const locale = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notifCount, setNotifCount] = useState(0);
+
+  useEffect(() => {
+    const poll = () => fetch("/api/notifications").then(r => r.json()).then(d => setNotifCount(d.unreadCount || 0));
+    poll();
+    const t = setInterval(poll, 30000);
+    return () => clearInterval(t);
+  }, []);
 
   const switchLocale = () => {
     const next = locale === "zh-CN" ? "en" : "zh-CN";
@@ -55,9 +63,12 @@ export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: P
           {locale === "zh-CN" ? "EN" : "中文"}
         </button>
 
-        <button className="p-2 hover:bg-gray-100 rounded-lg relative">
+        <button
+          className="p-2 hover:bg-gray-100 rounded-lg relative"
+          onClick={() => { fetch("/api/notifications", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) }).then(() => setNotifCount(0)); alert("通知已全部标为已读"); }}
+        >
           <Bell className="w-5 h-5 text-gray-600" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+          {notifCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{notifCount > 9 ? "9+" : notifCount}</span>}
         </button>
 
         <div className="relative">

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { generateOrderNo } from "@pos/shared";
+import { notifyNewOrder } from "@/lib/notify";
 
 type CreateOrderInput = {
   storeId: string;
@@ -93,6 +94,9 @@ export async function createOrder(input: CreateOrderInput) {
   await prisma.auditLog.create({
     data: { storeId: input.storeId, userId: input.cashierId, action: "order.create", entity: "Order", entityId: order.id },
   });
+
+  // Notify
+  await notifyNewOrder(input.storeId, orderNo, order.table?.label || null);
 
   revalidatePath("/[locale]/pos", "page");
   revalidatePath("/[locale]/", "page");

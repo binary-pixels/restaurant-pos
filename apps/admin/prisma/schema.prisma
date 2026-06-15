@@ -513,3 +513,13 @@ model Schedule {
   note      String?
   createdAt DateTime @default(now())
 }
+
+model Notification {
+  id        String   @id @default(cuid())
+  storeId   String
+  type      String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
