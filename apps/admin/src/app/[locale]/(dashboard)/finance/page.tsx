@@ -32,12 +32,20 @@ export default async function FinancePage() {
     totalRevenue += p.amount;
   }
 
-  // Today's order stats
-  const [orderCount, creditSummary] = await Promise.all([
+  // Today's refund and all-time balance
+  const [orderCount, creditSummary, refundTotal, customerBalance] = await Promise.all([
     prisma.order.count({ where: { storeId: session.user.storeId, createdAt: { gte: today, lt: tomorrow } } }),
     prisma.credit.aggregate({
       where: { customer: { storeId: session.user.storeId }, settledAt: null },
       _sum: { amount: true },
+    }),
+    prisma.payment.aggregate({
+      where: { status: "REFUNDED", paidAt: { gte: today, lt: tomorrow } },
+      _sum: { amount: true },
+    }),
+    prisma.customer.aggregate({
+      where: { storeId: session.user.storeId },
+      _sum: { balance: true },
     }),
   ]);
 
@@ -49,6 +57,8 @@ export default async function FinancePage() {
         totalRevenue={totalRevenue}
         orderCount={orderCount}
         totalDebt={creditSummary._sum.amount || 0}
+        totalRefund={refundTotal._sum.amount || 0}
+        totalCustomerBalance={customerBalance._sum.balance || 0}
       />
     </div>
   );

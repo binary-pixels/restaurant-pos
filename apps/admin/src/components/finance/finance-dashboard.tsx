@@ -1,6 +1,6 @@
 "use client";
 
-import { DollarSign, ShoppingCart, CreditCard, Users, Wallet, Banknote, Smartphone } from "lucide-react";
+import { DollarSign, ShoppingCart, CreditCard, Users, Wallet, Banknote, Smartphone, RotateCcw, TrendingUp } from "lucide-react";
 import { formatCurrency } from "@pos/shared";
 import { cn } from "@/lib/utils";
 
@@ -17,18 +17,22 @@ type Props = {
   totalRevenue: number;
   orderCount: number;
   totalDebt: number;
+  totalRefund: number;
+  totalCustomerBalance: number;
 };
 
-export function FinanceDashboard({ methodTotals, totalRevenue, orderCount, totalDebt }: Props) {
+export function FinanceDashboard({ methodTotals, totalRevenue, orderCount, totalDebt, totalRefund, totalCustomerBalance }: Props) {
   return (
     <div>
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {[
           { label: "今日营收", value: formatCurrency(totalRevenue), icon: DollarSign, color: "bg-blue-500" },
-          { label: "今日订单", value: String(orderCount), icon: ShoppingCart, color: "bg-green-500" },
+          { label: "今日退款", value: formatCurrency(totalRefund), icon: RotateCcw, color: "bg-orange-500" },
+          { label: "净收入", value: formatCurrency(totalRevenue - totalRefund), icon: TrendingUp, color: "bg-green-500" },
+          { label: "今日订单", value: String(orderCount), icon: ShoppingCart, color: "bg-indigo-500" },
           { label: "挂账总额", value: formatCurrency(totalDebt), icon: CreditCard, color: "bg-red-500" },
-          { label: "支付笔数", value: String(Object.values(methodTotals).reduce((a, b) => a + (b > 0 ? 1 : 0), 0)), icon: Wallet, color: "bg-purple-500" },
+          { label: "会员余额池", value: formatCurrency(totalCustomerBalance), icon: Wallet, color: "bg-purple-500" },
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-xl border p-4">
             <div className="flex items-center gap-3">

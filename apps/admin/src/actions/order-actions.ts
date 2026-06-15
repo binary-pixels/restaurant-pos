@@ -189,6 +189,30 @@ export async function cancelOrder(orderId: string) {
 }
 
 export async function refundOrder(orderId: string) {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: { items: true, payments: true },
+  });
+  if (!order) throw new Error("Order not found");
+
+  // Restore member balance if paid with MEMBER_BALANCE
+  for (const payment of order.payments) {
+    if (payment.status === "SUCCESS" && payment.method === "MEMBER_BALANCE" && order.customerId) {
+      await prisma.customer.update({
+        where: { id: order.customerId },
+        data: { balance: { increment: payment.amount } },
+      });
+    }
+  }
+
+  // Restore inventory
+  for (const item of order.items) {
+    await prisma.product.update({
+      where: { id: item.productId },
+      data: { stock: { increment: item.quantity } },
+    });
+  }
+
   const updated = await prisma.order.update({
     where: { id: orderId },
     data: { status: "REFUNDED", isClosed: true, closedAt: new Date(), isPaid: false },
@@ -200,16 +224,17 @@ export async function refundOrder(orderId: string) {
     data: { status: "REFUNDED" },
   });
 
-  const order = await prisma.order.findUnique({ where: { id: orderId } });
-  if (order?.tableId) {
+  if (order.tableId) {
     await prisma.table.update({ where: { id: order.tableId }, data: { status: "AVAILABLE" } });
   }
 
   await prisma.auditLog.create({
-    data: { storeId: order?.storeId || "", userId: "system", action: "order.refund", entity: "Order", entityId: orderId },
+    data: { storeId: order.storeId, userId: "system", action: "order.refund", entity: "Order", entityId: orderId,
+      details: JSON.stringify({ refundedPayments: order.payments.filter((p) => p.status === "SUCCESS").length }) },
   });
 
   revalidatePath("/[locale]/orders");
+  revalidatePath("/[locale]/finance");
   return updated;
 }
 
