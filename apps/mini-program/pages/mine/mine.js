@@ -7,9 +7,12 @@ Page({
     tierLabel: '',
     tierBadge: '',
     balance: '0.00',
+    referralCode: '',
+    referralCount: 0,
   },
 
   onShow: function() {
+    this.loadReferral();
     if (app.globalData.token) {
       this.loadProfile();
     } else {
@@ -39,6 +42,31 @@ Page({
 
   goLogin: function() {
     wx.navigateTo({ url: '/pages/login/login' });
+  },
+
+  loadReferral: function() {
+    var that = this;
+    var token = app.globalData.token || '';
+    if (!token) return;
+    wx.request({
+      url: app.globalData.baseUrl + '/api/mini-program/referral',
+      header: { 'Authorization': 'Bearer ' + token },
+      success: function(res) {
+        if (res.statusCode === 200 && res.data) {
+          that.setData({ referralCode: res.data.referralCode, referralCount: res.data.referralCount });
+        }
+      },
+    });
+  },
+
+  goReferral: function() {
+    if (!this.data.referralCode) return;
+    wx.showShareMenu({ withShareTicket: true });
+    wx.showModal({
+      title: '邀请好友',
+      content: '我的推荐码: ' + this.data.referralCode + '\n\n好友注册时输入此码，双方各得50积分！',
+      showCancel: false,
+    });
   },
 
   goPage: function(e) {
