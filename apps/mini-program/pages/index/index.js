@@ -12,6 +12,7 @@ Page({
     loading: true,
     cartCount: 0,
     cartTotal: 0,
+    showGuide: false,
     showBackTop: false,
     showSpec: false,
     specProduct: null,
@@ -26,6 +27,15 @@ Page({
     }
     if (options.tableId) app.globalData.tableId = options.tableId;
     if (options.storeId) app.globalData.storeId = options.storeId;
+
+    // First-time guide
+    var hasSeen = wx.getStorageSync('has_seen_guide');
+    if (!hasSeen) this.setData({ showGuide: true });
+  },
+
+  dismissGuide: function() {
+    wx.setStorageSync('has_seen_guide', '1');
+    this.setData({ showGuide: false });
   },
 
   onReady: function() {

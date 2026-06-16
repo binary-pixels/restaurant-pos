@@ -7,6 +7,17 @@
     <text class="announce-text">📢 {{announcement.title}}: {{announcement.content}}</text>
   </view>
 
+  <!-- First-time Guide -->
+  <view class="guide-overlay" wx:if="{{showGuide}}" catchtap="dismissGuide">
+    <view class="guide-card" catchtap>
+      <text class="guide-title">👋 欢迎使用扫码点餐</text>
+      <text class="guide-text">🖱️ 点击菜品添加到购物车</text>
+      <text class="guide-text">🛒 底部查看购物车</text>
+      <text class="guide-text">💳 去下单→确认支付</text>
+      <view class="btn btn-primary" bindtap="dismissGuide" style="margin-top:20rpx">知道了</view>
+    </view>
+  </view>
+
   <view class="search-bar">
     <input class="search-input" placeholder="搜索菜品..." value="{{keyword}}" bindinput="onSearch" />
   </view>
