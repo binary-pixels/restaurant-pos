@@ -17,7 +17,8 @@
     "pages/stamps/stamps",
     "pages/group-buy/group-buy",
     "pages/distributor/distributor",
-    "pages/reserve/reserve"
+    "pages/reserve/reserve",
+    "pages/member-card/member-card"
   ],
   "tabBar": {
     "color": "#999999",

@@ -31,6 +31,12 @@
     </view>
   </view>
 
+  <!-- Member Card -->
+  <view class="member-card-entry" wx:if="{{userInfo}}" bindtap="goPage" data-url="/pages/member-card/member-card">
+    <text>💳 电子会员卡</text>
+    <text class="text-gray text-sm">出示给收银员</text>
+  </view>
+
   <!-- Referral -->
   <view class="referral-card" wx:if="{{userInfo}}" bindtap="goReferral">
     <text class="ref-title">🎁 邀请好友，双方各得50积分</text>

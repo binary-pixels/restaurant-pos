@@ -30,6 +30,8 @@
 }
 .menu-item:last-child { border-bottom: none; }
 
+.member-card-entry { background: linear-gradient(135deg, #1e1b4b, #312e81); color: #fff; margin: 20rpx; border-radius: 16rpx; padding: 24rpx; display: flex; align-items: center; justify-content: space-between; font-size: 28rpx; cursor: pointer; }
+
 .referral-card { background: linear-gradient(135deg, #fef3c7, #fde68a); margin: 20rpx; border-radius: 16rpx; padding: 28rpx; text-align: center; cursor: pointer; }
 .ref-title { font-size: 30rpx; font-weight: bold; color: #92400e; display: block; }
 .ref-code { font-size: 28rpx; color: #d97706; margin-top: 8rpx; display: block; font-weight: 500; }
