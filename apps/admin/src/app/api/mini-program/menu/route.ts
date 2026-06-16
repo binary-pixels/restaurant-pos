@@ -34,5 +34,23 @@ export async function GET(req: NextRequest) {
   const freeDelivery = freeDeliveryPromo ? JSON.parse(freeDeliveryPromo.value) : { enabled: false };
   const tableCharge = tableChargeConfig ? JSON.parse(tableChargeConfig.value) : { enabled: false, amount: 2 };
 
-  return NextResponse.json({ categories, products, delivery, newCustomer, volumeDiscount, buyGive, freeDelivery, tableCharge });
+  // Product ratings aggregation
+  const ratedOrders = await prisma.order.findMany({
+    where: { storeId, rating: { not: null } },
+    include: { items: { select: { productId: true } } },
+  });
+  const productRatings: Record<string, { total: number; count: number }> = {};
+  for (const order of ratedOrders) {
+    if (!order.rating) continue;
+    for (const item of order.items) {
+      if (!productRatings[item.productId]) productRatings[item.productId] = { total: 0, count: 0 };
+      productRatings[item.productId].total += order.rating;
+      productRatings[item.productId].count++;
+    }
+  }
+  const ratings = Object.fromEntries(
+    Object.entries(productRatings).map(([k, v]) => [k, (v.total / v.count).toFixed(1)])
+  );
+
+  return NextResponse.json({ categories, products, delivery, newCustomer, volumeDiscount, buyGive, freeDelivery, tableCharge, ratings });
 }

@@ -69,6 +69,10 @@
       <view class="product-img"><text class="product-img-text">{{item.name[0]}}</text></view>
       <view class="product-info">
         <text class="product-name">{{item.name}}</text>
+        <view class="stars-row" wx:if="{{item.rating > 0}}">
+          <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" style="color:{{item <= item.rating ? '#f59e0b' : '#e5e7eb'}};font-size:20rpx">{{item <= item.rating ? '★' : '☆'}}</text>
+          <text style="font-size:20rpx;color:#f59e0b;margin-left:4rpx">{{item.rating}}</text>
+        </view>
         <view class="product-row">
           <text wx:if="{{item.discountPrice > 0 && item.stock > 0}}" style="text-decoration:line-through;color:#999;font-size:24rpx;margin-right:8rpx">¥{{item.price}}</text>
           <text class="price" wx:if="{{item.stock > 0}}">¥{{item.discountPrice > 0 ? item.discountPrice : item.price}}</text>
