@@ -18,11 +18,28 @@ type Props = {
   onToggle: () => void;
 };
 
+function useDarkMode() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem("pos-dark-mode") === "1";
+    setDark(saved);
+    document.documentElement.classList.toggle("dark", saved);
+  }, []);
+  function toggle() {
+    const next = !dark;
+    setDark(next);
+    localStorage.setItem("pos-dark-mode", next ? "1" : "0");
+    document.documentElement.classList.toggle("dark", next);
+  }
+  return { dark, toggle };
+}
+
 export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: Props) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
+  const { dark, toggle: toggleDark } = useDarkMode();
 
   useEffect(() => {
     const poll = () => fetch("/api/notifications").then(r => r.json()).then(d => setNotifCount(d.unreadCount || 0));
@@ -61,6 +78,10 @@ export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: P
         >
           <Globe className="w-4 h-4" />
           {locale === "zh-CN" ? "EN" : "中文"}
+        </button>
+
+        <button onClick={toggleDark} className="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg" title={dark ? "亮色模式" : "暗色模式"}>
+          {dark ? "☀️" : "🌙"}
         </button>
 
         <button
