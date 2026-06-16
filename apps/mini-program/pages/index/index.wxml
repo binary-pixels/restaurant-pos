@@ -56,6 +56,11 @@
     </view>
   </scroll-view>
 
+  <!-- Back to Top -->
+  <view class="back-top {{showBackTop ? 'visible' : ''}}" bindtap="scrollToTop" wx:if="{{showBackTop}}">
+    <text>⬆</text>
+  </view>
+
   <view class="cart-bar" wx:if="{{cartCount > 0}}" bindtap="goOrder">
     <view class="cart-left">
       <view class="cart-icon">🛒<text class="cart-badge">{{cartCount}}</text></view>

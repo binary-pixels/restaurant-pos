@@ -12,6 +12,7 @@ Page({
     loading: true,
     cartCount: 0,
     cartTotal: 0,
+    showBackTop: false,
     showSpec: false,
     specProduct: null,
   },
@@ -81,8 +82,17 @@ Page({
   },
 
   switchCat: function(e) {
-    this.setData({ activeCat: e.currentTarget.dataset.id });
+    this.setData({ activeCat: e.currentTarget.dataset.id, showBackTop: false });
     this.filterProducts();
+    wx.pageScrollTo({ scrollTop: 0, duration: 200 });
+  },
+
+  onPageScroll: function(e) {
+    this.setData({ showBackTop: e.scrollTop > 500 });
+  },
+
+  scrollToTop: function() {
+    wx.pageScrollTo({ scrollTop: 0, duration: 300 });
   },
 
   filterProducts: function() {
