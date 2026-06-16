@@ -196,4 +196,7 @@ Page({
       });
     });
   },
+  onShareAppMessage: function() {
+    return { title: '我在餐厅点了一份 ' + this.data.statusLabel + ' 的订单', path: '/pages/index/index' };
+  },
 });

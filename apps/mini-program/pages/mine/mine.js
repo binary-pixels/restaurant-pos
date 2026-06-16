@@ -76,4 +76,7 @@ Page({
   onComingSoon: function() {
     wx.showToast({ title: '敬请期待', icon: 'none' });
   },
+  onShareAppMessage: function() {
+    return { title: '好味道餐厅 · 扫码点餐更便捷', path: '/pages/index/index' };
+  },
 });

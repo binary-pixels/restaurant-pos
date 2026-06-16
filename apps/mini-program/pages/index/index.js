@@ -169,4 +169,7 @@ Page({
     if (this.data.cartCount === 0) return;
     wx.navigateTo({ url: '/pages/order/order' });
   },
+  onShareAppMessage: function() {
+    return { title: '来' + (app.globalData.tableLabel || '餐厅') + '点餐吧！', path: '/pages/index/index' };
+  },
 });
