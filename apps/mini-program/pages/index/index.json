@@ -2,5 +2,6 @@
   "usingComponents": {
     "spec-popup": "/components/spec-popup/spec-popup"
   },
-  "navigationBarTitleText": "点餐"
+  "navigationBarTitleText": "点餐",
+  "enablePullDownRefresh": true
 }

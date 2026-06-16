@@ -54,4 +54,8 @@ Page({
   goDetail: function(e) {
     wx.navigateTo({ url: '/pages/order-detail/order-detail?id=' + e.currentTarget.dataset.id });
   },
+  onPullDownRefresh: function() {
+    this.loadOrders();
+    wx.stopPullDownRefresh();
+  },
 });
