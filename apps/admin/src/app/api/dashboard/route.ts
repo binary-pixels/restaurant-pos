@@ -35,11 +35,25 @@ export async function GET() {
     }),
   ]);
 
+  // Additional stats
+  const [pendingOrders, todayReservations, lowStockCount, activePromos, todayBirthdays] = await Promise.all([
+    prisma.order.count({ where: { storeId, status: "PENDING", createdAt: { gte: today, lt: tomorrow } } }),
+    prisma.reservation.count({ where: { storeId, date: today.toISOString().slice(0, 10), status: { not: "CANCELLED" } } }),
+    prisma.product.count({ where: { storeId, isActive: true, stock: { lte: 10 } } }),
+    prisma.coupon.count({ where: { storeId, isActive: true } }),
+    prisma.customer.count({ where: { storeId, birthday: { contains: "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0") } } }),
+  ]);
+
   return NextResponse.json({
     todayOrders,
     todayRevenue: todayRevenue._sum.amount || 0,
     todayCustomers: todayCustomers.length,
     activeTables,
+    pendingOrders,
+    todayReservations,
+    lowStockCount,
+    activePromos,
+    todayBirthdays,
     recentOrders: recentOrders.map((o) => ({
       id: o.id,
       orderNo: o.orderNo,

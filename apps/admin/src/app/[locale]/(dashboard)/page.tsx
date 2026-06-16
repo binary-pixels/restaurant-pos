@@ -10,6 +10,11 @@ type DashData = {
   todayRevenue: number;
   todayCustomers: number;
   activeTables: number;
+  pendingOrders: number;
+  todayReservations: number;
+  lowStockCount: number;
+  activePromos: number;
+  todayBirthdays: number;
   recentOrders: {
     id: string;
     orderNo: string;
@@ -88,6 +93,22 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Operations Highlights */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+        {[
+          { label: "待处理订单", value: data.pendingOrders || 0, color: "text-red-600", link: "/orders" },
+          { label: "今日预订", value: data.todayReservations || 0, color: "text-blue-600", link: "/tables/reservations" },
+          { label: "库存预警", value: data.lowStockCount || 0, color: "text-amber-600", link: "/menu/inventory" },
+          { label: "进行中活动", value: data.activePromos || 0, color: "text-green-600", link: "/marketing/coupons" },
+          { label: "今日生日", value: data.todayBirthdays || 0, color: "text-pink-600", link: "/marketing/birthdays" },
+        ].map((s) => (
+          <a key={s.label} href={s.link} className="bg-white rounded-xl border p-3 hover:shadow-sm transition-shadow">
+            <p className="text-xs text-gray-500">{s.label}</p>
+            <p className={"text-xl font-bold " + s.color}>{s.value}</p>
+          </a>
         ))}
       </div>
 
