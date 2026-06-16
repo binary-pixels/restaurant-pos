@@ -39,6 +39,7 @@ export async function createProduct(data: {
   barcode?: string;
   discountPrice?: number;
   discountEnd?: string;
+  isRecommended?: boolean;
 }) {
   const product = await prisma.product.create({
     data: {
@@ -55,6 +56,7 @@ export async function createProduct(data: {
       barcode: data.barcode || null,
       discountPrice: data.discountPrice || null,
       discountEnd: data.discountEnd ? new Date(data.discountEnd) : null,
+      isRecommended: data.isRecommended || false,
     },
   });
   revalidatePath("/[locale]/menu");
@@ -76,6 +78,7 @@ export async function updateProduct(
     barcode?: string;
     discountPrice?: number;
     discountEnd?: string;
+    isRecommended?: boolean;
     isActive?: boolean;
   }
 ) {

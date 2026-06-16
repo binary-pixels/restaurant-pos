@@ -44,7 +44,7 @@ Page({
           var now = new Date();
           var products = (res.data.products || []).map(function(p) {
             var onSale = !!(p.discountPrice && p.discountPrice > 0 && p.discountEnd && new Date(p.discountEnd) > now);
-            return { id: p.id, categoryId: p.categoryId, name: p.name, price: p.price, unit: p.unit, _qty: 0, hasSpecs: !!(p.specs && p.specs.length > 0), discountPrice: onSale ? p.discountPrice : 0 };
+            return { id: p.id, categoryId: p.categoryId, name: p.name, price: p.price, unit: p.unit, _qty: 0, hasSpecs: !!(p.specs && p.specs.length > 0), discountPrice: onSale ? p.discountPrice : 0, isRecommended: !!p.isRecommended };
           });
           that._rawProducts = res.data.products || [];
           // Save delivery config globally
@@ -54,7 +54,8 @@ Page({
           if (res.data.buyGive) app.globalData.buyGive = res.data.buyGive;
           if (res.data.freeDelivery) app.globalData.freeDeliveryPromo = res.data.freeDelivery;
           if (res.data.tableCharge) app.globalData.tableCharge = res.data.tableCharge;
-          that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products });
+          var recommended = products.filter(function(p) { return p.isRecommended; });
+          that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products, recommended: recommended });
         }
       },
     });

@@ -33,7 +33,7 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productForm, setProductForm] = useState({
-    categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "", discountPrice: 0, discountEnd: "",
+    categoryId: "", name: "", price: 0, costPrice: 0, unit: "份", stock: 0, lowStockAt: 10, barcode: "", image: "", discountPrice: 0, discountEnd: "", isRecommended: false,
   });
 
   // Specs modal
@@ -291,6 +291,10 @@ export function MenuManager({ categories: initCats, products: initProds, storeId
                   <input type="datetime-local" value={productForm.discountEnd} onChange={(e) => setProductForm({ ...productForm, discountEnd: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
                 </div>
               </div>
+              <label className="flex items-center gap-2 mt-3">
+                <input type="checkbox" checked={productForm.isRecommended} onChange={(e) => setProductForm({ ...productForm, isRecommended: e.target.checked })} className="w-4 h-4" />
+                <span className="text-sm">⭐ 主厨推荐（小程序首页突出显示）</span>
+              </label>
             </div>
             <div className="flex justify-end gap-2 mt-6">
               <button onClick={() => setShowProductForm(false)} className="px-4 py-2 text-sm bg-gray-100 rounded-lg">{c("cancel")}</button>
