@@ -14,8 +14,8 @@
   <block wx:if="{{order}}">
     <!-- Status Card -->
     <view class="status-card card text-center">
-      <text class="status-icon">{{statusIcon}}</text>
-      <text class="status-text">{{statusLabel}}</text>
+      <text class="status-icon">{{order.isPaid ? '🎉' : statusIcon}}</text>
+      <text class="status-text">{{order.isPaid ? '支付成功' : statusLabel}}</text>
       <text class="text-sm text-gray mt-1">#{{order.orderNo}}</text>
       <view class="flex-center mt-2" style="gap:12rpx">
         <text class="text-xs text-gray">{{orderTime}}</text>
@@ -94,6 +94,7 @@
       <view class="btn btn-outline" wx:if="{{!order.isPaid && order.status !== 'CANCELLED'}}" bindtap="doCancel">取消订单</view>
 
       <!-- Order again -->
+      <view class="btn btn-primary" wx:if="{{order.isPaid}}" bindtap="goHome">继续点餐</view>
       <view class="btn btn-outline" wx:if="{{order.status === 'COMPLETED'}}" bindtap="reorder">再来一单</view>
     </view>
   </block>

@@ -131,6 +131,10 @@ Page({
     });
   },
 
+  goHome: function() {
+    wx.switchTab({ url: '/pages/index/index' });
+  },
+
   reorder: function() {
     var order = this.data.order;
     if (!order || !order.items) return;
