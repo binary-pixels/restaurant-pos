@@ -8,8 +8,9 @@ import {
   Globe,
   Bell,
   ChevronDown,
+  Search,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -40,6 +41,22 @@ export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: P
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifCount, setNotifCount] = useState(0);
   const { dark, toggle: toggleDark } = useDarkMode();
+  const [searchQ, setSearchQ] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const timerRef = useRef<any>(null);
+
+  function doSearch(q: string) {
+    setSearchQ(q);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (q.length < 2) { setResults([]); setShowResults(false); return; }
+    timerRef.current = setTimeout(async () => {
+      const res = await fetch("/api/search?q=" + encodeURIComponent(q));
+      const data = await res.json();
+      setResults(data.results || []);
+      setShowResults(true);
+    }, 300);
+  }
 
   useEffect(() => {
     const poll = () => fetch("/api/notifications").then(r => r.json()).then(d => setNotifCount(d.unreadCount || 0));
@@ -69,6 +86,29 @@ export function TopBar({ storeName = "好味道餐厅", collapsed, onToggle }: P
           <Menu className="w-5 h-5 text-gray-600" />
         </button>
         <h2 className="text-lg font-semibold text-gray-900">{storeName}</h2>
+        <div className="relative ml-6">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            value={searchQ}
+            onChange={(e) => doSearch(e.target.value)}
+            placeholder="搜索订单/客户/菜品..."
+            className="w-64 pl-10 pr-4 py-1.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onFocus={() => results.length > 0 && setShowResults(true)}
+            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          />
+          {showResults && results.length > 0 && (
+            <div className="absolute top-full mt-1 left-0 right-0 bg-white border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+              {results.map((r, i) => (
+                <a key={i} href={"/" + locale + r.url} className="block px-4 py-2 text-sm hover:bg-gray-50 border-b last:border-0">
+                  <span className={r.type === "order" ? "text-blue-600" : r.type === "customer" ? "text-green-600" : "text-purple-600"}>
+                    [{r.type === "order" ? "订" : r.type === "customer" ? "客" : "菜"}]
+                  </span>{" "}
+                  {r.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-3">
