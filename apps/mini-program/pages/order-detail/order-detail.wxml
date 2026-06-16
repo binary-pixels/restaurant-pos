@@ -24,6 +24,18 @@
       </view>
     </view>
 
+    <!-- Timeline -->
+    <view class="card" wx:if="{{order.status !== 'CANCELLED' && order.status !== 'REFUNDED'}}">
+      <text class="font-bold text-lg mb-3">订单进度</text>
+      <view class="timeline">
+        <view class="tl-step {{stepIdx >= 1 ? 'done' : ''}} {{stepIdx === 0 ? 'current' : ''}}" wx:for="{{steps}}" wx:key="*this" wx:for-index="i">
+          <view class="tl-dot">{{stepIdx >= (i + 1) || stepIdx === i ? '✓' : (i + 1)}}</view>
+          <text class="tl-label">{{item}}</text>
+          <view class="tl-line" wx:if="{{i < steps.length - 1}}"></view>
+        </view>
+      </view>
+    </view>
+
     <!-- Items -->
     <view class="card">
       <text class="font-bold text-lg mb-2">菜品明细</text>

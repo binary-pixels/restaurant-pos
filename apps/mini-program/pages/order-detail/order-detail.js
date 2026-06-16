@@ -69,6 +69,8 @@ Page({
       if (order.createdAt) {
         timeStr = new Date(order.createdAt).toLocaleString('zh-CN');
       }
+      var steps = ['已下单', '已接单', '制作中', '已出餐', '已完成'];
+      var stepMap = { PENDING: 0, CONFIRMED: 1, PREPARING: 2, SERVED: 3, COMPLETED: 4 };
       that.setData({
         order: order,
         loadError: false,
@@ -76,6 +78,8 @@ Page({
         paymentMethod: pm,
         statusIcon: STATUS_EMOJI[status] || '⏳',
         statusLabel: STATUS_LABELS[status] || status,
+        steps: steps,
+        stepIdx: stepMap[status] != null ? stepMap[status] : 0,
       });
       if (status === 'COMPLETED' || status === 'CANCELLED' || status === 'REFUNDED') {
         if (that._timer) { clearInterval(that._timer); that._timer = null; }

@@ -13,4 +13,14 @@
 .actions { padding: 24rpx; display: flex; flex-direction: column; gap: 16rpx; }
 .actions .btn { width: 100%; text-align: center; }
 
+.timeline { display: flex; align-items: center; padding: 8rpx 0; }
+.tl-step { flex: 1; text-align: center; position: relative; }
+.tl-dot { width: 40rpx; height: 40rpx; border-radius: 50%; background: #e5e7eb; color: #999; display: flex; align-items: center; justify-content: center; font-size: 20rpx; margin: 0 auto 8rpx; }
+.tl-step.done .tl-dot { background: #22c55e; color: #fff; }
+.tl-step.current .tl-dot { background: #2563eb; color: #fff; }
+.tl-label { font-size: 20rpx; color: #999; }
+.tl-step.done .tl-label, .tl-step.current .tl-label { color: #333; }
+.tl-line { position: absolute; top: 20rpx; left: 60%; right: -40%; height: 2rpx; background: #e5e7eb; }
+.tl-step.done .tl-line { background: #22c55e; }
+
 .flex-center { display: flex; align-items: center; justify-content: center; }
