@@ -59,9 +59,10 @@
       <view class="product-info">
         <text class="product-name">{{item.name}}</text>
         <view class="product-row">
-          <text wx:if="{{item.discountPrice > 0}}" style="text-decoration:line-through;color:#999;font-size:24rpx;margin-right:8rpx">¥{{item.price}}</text>
-          <text class="price">¥{{item.discountPrice > 0 ? item.discountPrice : item.price}}</text>
-          <view class="qty-ctrl">
+          <text wx:if="{{item.discountPrice > 0 && item.stock > 0}}" style="text-decoration:line-through;color:#999;font-size:24rpx;margin-right:8rpx">¥{{item.price}}</text>
+          <text class="price" wx:if="{{item.stock > 0}}">¥{{item.discountPrice > 0 ? item.discountPrice : item.price}}</text>
+          <text class="price" wx:else style="color:#999">售罄</text>
+          <view class="qty-ctrl" wx:if="{{item.stock > 0}}">
             <view class="qty-btn" catchtap="decQty" data-id="{{item.id}}">-</view>
             <text class="qty-num">{{item._qty || 0}}</text>
             <view class="qty-btn add" catchtap="incQty" data-id="{{item.id}}">+</view>
