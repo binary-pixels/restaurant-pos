@@ -1,8 +1,10 @@
 var app = getApp();
 var api = require('../../utils/api');
+var i18n = require('../../utils/i18n');
 
 Page({
   data: {
+    langLabel: '',
     userInfo: null,
     tierLabel: '',
     tierBadge: '',
@@ -12,6 +14,7 @@ Page({
   },
 
   onShow: function() {
+    this.setData({ langLabel: i18n.getLang() === 'zh-CN' ? 'EN / 中文' : '中文 / EN' });
     this.loadReferral();
     if (app.globalData.token) {
       this.loadProfile();
@@ -57,6 +60,18 @@ Page({
         }
       },
     });
+  },
+
+  switchLang: function() {
+    var next = i18n.getLang() === 'zh-CN' ? 'en' : 'zh-CN';
+    i18n.setLang(next);
+    this.setData({ langLabel: next === 'zh-CN' ? 'EN / 中文' : '中文 / EN' });
+    // Update tab bar
+    var tabs = i18n.LANGS[next];
+    wx.setTabBarItem({ index: 0, text: tabs.menu });
+    wx.setTabBarItem({ index: 1, text: tabs.orders });
+    wx.setTabBarItem({ index: 2, text: tabs.mine });
+    wx.showToast({ title: next === 'zh-CN' ? '已切换为中文' : 'Switched to English', icon: 'none' });
   },
 
   goReferral: function() {
