@@ -129,24 +129,23 @@ Page({
   openSpec: function(e) {
     var product = e.currentTarget.dataset.product;
     var full = (this._rawProducts || []).find(function(p) { return p.id === product.id; });
-    if (full && full.specs && full.specs.length > 0) {
-      this.setData({ showSpec: true, specProduct: full });
-    } else {
-      this.incQty({ currentTarget: { dataset: { id: product.id } } });
-    }
+    // Show detail popup for ALL products
+    this.setData({ showSpec: true, specProduct: full || product });
   },
 
   onSpecConfirm: function(e) {
     var product = e.detail.product;
     var options = e.detail.options;
+    var qty = e.detail.qty || 1;
+    var totalPrice = parseFloat(e.detail.totalPrice) || product.price;
     var keys = [];
     for (var k in options) keys.push(options[k]);
     var specKey = keys.join(',');
     var cart = app.globalData.cart || [];
     var key = product.id + '_' + specKey;
     var existing = cart.find(function(c) { return c._key === key; });
-    if (existing) { existing.quantity++; }
-    else cart.push({ _key: key, productId: product.id, productName: product.name, quantity: 1, unitPrice: product.price, specSnapshot: specKey });
+    if (existing) { existing.quantity += qty; }
+    else cart.push({ _key: key, productId: product.id, productName: product.name, quantity: qty, unitPrice: parseFloat((totalPrice / qty).toFixed(2)), specSnapshot: specKey || undefined });
     app.globalData.cart = cart;
     app.saveCart();
     this.setData({ showSpec: false, specProduct: null });

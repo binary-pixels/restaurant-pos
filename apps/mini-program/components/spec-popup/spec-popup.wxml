@@ -1,22 +1,39 @@
-<view class="spec-mask" wx:if="{{show}}" bindtap="onClose">
-  <view class="spec-panel" catchtap>
-    <text class="spec-name">{{product.name}}</text>
+<view class="mask" wx:if="{{show}}" bindtap="onClose">
+  <view class="panel" catchtap>
+    <!-- Product Image -->
+    <view class="img-area">
+      <text class="img-text">{{product.name[0]}}</text>
+    </view>
+
+    <!-- Name + Price -->
+    <view class="info-top">
+      <text class="p-name">{{product.name}}</text>
+      <view class="prices">
+        <text class="p-price">¥{{product.discountPrice > 0 ? product.discountPrice : product.price}}</text>
+        <text class="p-orig" wx:if="{{product.discountPrice > 0}}">¥{{product.price}}</text>
+      </view>
+      <text class="p-unit text-gray">/{{product.unit || '份'}}</text>
+    </view>
+
+    <!-- Specs -->
     <view class="spec-group" wx:for="{{product.specs}}" wx:key="id" wx:for-item="spec">
       <text class="spec-label">{{spec.name}}</text>
       <view class="spec-options">
-        <view
-          class="spec-option {{selected[spec.id] === opt.id ? 'active' : ''}}"
-          wx:for="{{spec.options}}" wx:key="id" wx:for-item="opt"
-          bindtap="selectOption" data-spec-id="{{spec.id}}" data-opt-id="{{opt.id}}"
-        >
+        <view class="spec-option {{selected[spec.id] === opt.id ? 'active' : ''}}" wx:for="{{spec.options}}" wx:key="id" wx:for-item="opt" bindtap="selectOption" data-spec-id="{{spec.id}}" data-opt-id="{{opt.id}}">
           {{opt.label}}
           <text wx:if="{{opt.priceAdj > 0}}"> +¥{{opt.priceAdj}}</text>
         </view>
       </view>
     </view>
-    <view class="spec-actions">
-      <view class="btn btn-sm btn-outline" bindtap="onClose">取消</view>
-      <view class="btn btn-sm btn-primary" bindtap="onConfirm">加入购物车 · ¥{{product.price}}</view>
+
+    <!-- Quantity + Add to Cart -->
+    <view class="bottom-bar">
+      <view class="qty-ctrl">
+        <view class="qty-btn" bindtap="decQty">-</view>
+        <text class="qty-num">{{qty}}</text>
+        <view class="qty-btn add" bindtap="incQty">+</view>
+      </view>
+      <view class="btn btn-primary" bindtap="onConfirm" style="flex:1">加入购物车 · ¥{{totalPrice}}</view>
     </view>
   </view>
 </view>
