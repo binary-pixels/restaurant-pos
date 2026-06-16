@@ -9,6 +9,7 @@ Page({
     categories: [],
     products: [],
     filteredProducts: [{ id: '0', name: '加载中...', price: 0, unit: '' }],
+    loading: true,
     cartCount: 0,
     cartTotal: 0,
     showSpec: false,
@@ -55,7 +56,7 @@ Page({
           if (res.data.freeDelivery) app.globalData.freeDeliveryPromo = res.data.freeDelivery;
           if (res.data.tableCharge) app.globalData.tableCharge = res.data.tableCharge;
           var recommended = products.filter(function(p) { return p.isRecommended; });
-          that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products, recommended: recommended });
+          that.setData({ categories: res.data.categories || [], products: products, filteredProducts: products, recommended: recommended, loading: false });
         }
       },
     });
@@ -69,7 +70,7 @@ Page({
         }
       },
       fail: function() {
-        that.setData({ filteredProducts: [{ id: 'err', name: '加载失败，下拉重试', price: 0, unit: '' }] });
+        that.setData({ loading: false, filteredProducts: [{ id: 'err', name: '加载失败，下拉重试', price: 0, unit: '' }] });
       }
     });
   },
