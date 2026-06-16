@@ -11,6 +11,21 @@
     <input class="search-input" placeholder="搜索菜品..." value="{{keyword}}" bindinput="onSearch" />
   </view>
 
+  <!-- Frequent Items -->
+  <view class="frequent-section" wx:if="{{frequent.length > 0 && !keyword}}">
+    <text class="rec-title">🕐 常点菜品</text>
+    <scroll-view class="rec-scroll" scroll-x>
+      <view class="rec-item" wx:for="{{frequent}}" wx:key="id" bindtap="openSpec" data-product="{{item}}">
+        <text class="rec-name">{{item.name}}</text>
+        <text class="text-xs text-gray">×{{item.count}}次</text>
+      </view>
+      <view class="rec-item" wx:if="{{lastItems.length > 0}}" style="background:#eff6ff" bindtap="reorderLast">
+        <text class="rec-name">🔄 再来一单</text>
+        <text class="text-xs text-gray">{{lastItems[0].name}}等</text>
+      </view>
+    </scroll-view>
+  </view>
+
   <!-- Recommended -->
   <view class="recommend-section" wx:if="{{recommended.length > 0 && !keyword}}">
     <text class="rec-title">⭐ 主厨推荐</text>

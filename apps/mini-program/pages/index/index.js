@@ -30,6 +30,26 @@ Page({
 
   onReady: function() {
     this.loadMenu();
+    this.loadFrequent();
+  },
+
+  loadFrequent: function() {
+    var that = this;
+    var token = app.globalData.token || "";
+    if (!token) return;
+    wx.request({
+      url: app.globalData.baseUrl + "/api/mini-program/frequent",
+      header: { Authorization: "Bearer " + token },
+      success: function(res) {
+        if (res.statusCode === 200 && res.data) {
+          that.setData({
+            frequent: res.data.frequent || [],
+            lastItems: res.data.lastItems || [],
+            lastOrderId: res.data.lastOrderId,
+          });
+        }
+      },
+    });
   },
 
   onShow: function() {
@@ -174,6 +194,28 @@ Page({
     var count = 0, total = 0;
     for (var i = 0; i < cart.length; i++) { count += cart[i].quantity; total += cart[i].unitPrice * cart[i].quantity; }
     this.setData({ cartCount: count, cartTotal: total.toFixed(2) });
+  },
+
+  reorderLast: function() {
+    var that = this;
+    var token = app.globalData.token || "";
+    var oid = that.data.lastOrderId;
+    if (!oid) return;
+    wx.request({
+      url: app.globalData.baseUrl + "/api/mini-program/orders/" + oid,
+      header: { Authorization: "Bearer " + token },
+      success: function(res) {
+        if (res.statusCode === 200 && res.data && res.data.items) {
+          var items = res.data.items;
+          var cart = [];
+          for (var i = 0; i < items.length; i++) {
+            cart.push({ productId: items[i].productId, productName: items[i].productName, quantity: items[i].quantity, unitPrice: items[i].unitPrice });
+          }
+          app.globalData.cart = cart; app.saveCart();
+          wx.navigateTo({ url: "/pages/order/order" });
+        }
+      },
+    });
   },
 
   goOrder: function() {
