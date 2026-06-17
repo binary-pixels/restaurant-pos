@@ -23,6 +23,9 @@
 .product-card { display: flex; background: #fff; border-radius: 16rpx; padding: 24rpx; margin: 0 20rpx 16rpx 20rpx; }
 .product-img { width: 140rpx; height: 140rpx; background: #f0f5ff; border-radius: 12rpx; display: flex; align-items: center; justify-content: center; margin-right: 20rpx; flex-shrink: 0; }
 .product-img-text { font-size: 48rpx; color: #2563eb; font-weight: bold; }
+.product-img { position: relative; }
+.fav-btn { position: absolute; top: 4rpx; right: 4rpx; width: 40rpx; height: 40rpx; border-radius: 50%; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 24rpx; }
+.fav-btn.active { background: #fef2f2; color: #ef4444; }
 .product-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .product-name { font-size: 30rpx; font-weight: 500; }
 .product-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8rpx; }

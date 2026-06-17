@@ -12,6 +12,7 @@ Page({
     loading: true,
     cartCount: 0,
     cartTotal: 0,
+    favorites: [],
     showGuide: false,
     showBackTop: false,
     showSpec: false,
@@ -27,6 +28,10 @@ Page({
     }
     if (options.tableId) app.globalData.tableId = options.tableId;
     if (options.storeId) app.globalData.storeId = options.storeId;
+
+    // Load favorites
+    var favs = wx.getStorageSync('favs');
+    this.setData({ favorites: favs ? JSON.parse(favs) : [] });
 
     // First-time guide
     var hasSeen = wx.getStorageSync('has_seen_guide');
@@ -206,6 +211,18 @@ Page({
     var count = 0, total = 0;
     for (var i = 0; i < cart.length; i++) { count += cart[i].quantity; total += cart[i].unitPrice * cart[i].quantity; }
     this.setData({ cartCount: count, cartTotal: total.toFixed(2) });
+  },
+
+  toggleFav: function(e) {
+    var id = e.currentTarget.dataset.id;
+    var favs = this.data.favorites.slice();
+    var idx = favs.indexOf(id);
+    if (idx >= 0) favs.splice(idx, 1);
+    else favs.push(id);
+    this.setData({ favorites: favs });
+    wx.setStorageSync('favs', JSON.stringify(favs));
+    this.filterProducts();
+    wx.showToast({ title: idx >= 0 ? '已取消收藏' : '已收藏', icon: 'none' });
   },
 
   reorderLast: function() {
