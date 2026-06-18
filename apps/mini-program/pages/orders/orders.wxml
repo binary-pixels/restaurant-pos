@@ -4,7 +4,7 @@
     <view class="tab {{activeTab === 'active' ? 'active' : ''}}" bindtap="switchTab" data-tab="active">进行中</view>
   </view>
 
-  <view class="text-center" wx:if="{{loading}}" style="padding:80rpx 0;color:#999">加载中...</view>
+  <view class="spinner-wrap" wx:if="{{loading}}"><view class="spinner"></view><text class="spinner-text">加载中</text></view>
 
   <view class="order-card card" wx:for="{{orders}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
     <view class="flex-between mb-2">
